@@ -10,5 +10,19 @@
 
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
+
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form action="{{ path('app_auth_login') }}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="_username" value="{{ last_username }}" required/>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="_password" required/>
+
+        <button type="submit">Login</button>
+    </form>
 </div>
 {% endblock %}
