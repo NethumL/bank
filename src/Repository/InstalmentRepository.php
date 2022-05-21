@@ -13,6 +13,14 @@ class InstalmentRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function findOneById(string $instalmentId): array|bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("SELECT I.*, L.User_ID FROM Installment I JOIN Loan L ON L.ID = I.Loan_ID WHERE I.ID = ?");
+        $resultSet = $stmt->executeQuery([$instalmentId]);
+        return $resultSet->fetchAssociative();
+    }
+
     public function findAllByUser(string $userId): array
     {
         $conn = $this->getEntityManager()->getConnection();
