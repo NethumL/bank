@@ -28,4 +28,11 @@ class InstalmentRepository extends ServiceEntityRepository
         $resultSet = $stmt->executeQuery([$userId]);
         return $resultSet->fetchAllAssociative();
     }
+
+    public function markAsPaid(string $instalmentId): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("UPDATE Installment SET Status='PAID' WHERE ID = ?");
+        return $stmt->executeStatement([$instalmentId]);
+    }
 }
