@@ -16,7 +16,7 @@ class InstalmentRepository extends ServiceEntityRepository
     public function findAllByUser(string $userId): array
     {
         $conn = $this->getEntityManager()->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM Installment I JOIN Loan L ON I.Loan_ID = L.ID WHERE User_ID = ?");
+        $stmt = $conn->prepare("SELECT I.*, L.User_ID, L.Loan_Type FROM Installment I JOIN Loan L ON I.Loan_ID = L.ID WHERE User_ID = ?");
         $resultSet = $stmt->executeQuery([$userId]);
         return $resultSet->fetchAllAssociative();
     }
