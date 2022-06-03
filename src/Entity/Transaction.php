@@ -43,12 +43,9 @@ class Transaction
     private $amount;
 
     /**
-     * @var \Account
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Account")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="From", referencedColumnName="Account_Number")
-     * })
+     * @ORM\Column(name="From", type="string", length=20, nullable=false)
      */
     private $from;
 
@@ -93,12 +90,12 @@ class Transaction
         return $this;
     }
 
-    public function getFrom(): ?Account
+    public function getFrom(): ?string
     {
         return $this->from;
     }
 
-    public function setFrom(?Account $from): self
+    public function setFrom(?string $from): self
     {
         $this->from = $from;
 
