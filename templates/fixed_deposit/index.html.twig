@@ -3,12 +3,44 @@
 {% block title %}Hello FixedDepositController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-</div>
+    <h2>Start a Fixed Deposit</h2>
+    <div class="card">
+        <div class="card-body">
+            <form class="form-horizontal" method="post">
+                <div class="row">
+                    <div class="form-group mb-4">
+                        <label for="loan_plan">Type</label>
+                        <select class="form-select" id="loan_plan" name="loan_plan" required>
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="agree">
+                    <label class="form-check-label" for="agree">
+                        Agree to Terms and Conditions
+                    </label>
+                </div>
+                <div class="mt-4">
+                    <button
+                            class="btn btn-success btn-block waves-effect waves-light"
+                            type="submit"
+                            name="btn_submit"
+                    >
+                        Submit
+                    </button>
+                    <button
+                            class="btn btn-danger btn-block waves-effect waves-light"
+                            type="submit"
+                            name="btn_submit"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

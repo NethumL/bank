@@ -1,14 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccountController!{% endblock %}
+{% block title %}Hello InstalmentController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card-body">
+                        <h2 class="header-title">Create Account</h2>
+                        <form class="needs-validation" novalidate>
+                            <div class="row">
+                                <label for="name">Name</label>
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
+                                       value="" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="NIC">NIC</label>
+                                <input type="text" name="NIC" class="form-control" id="NIC" placeholder="NIC" value=""
+                                       required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-</div>
+                            <div class="row">
+                                <label for="address">Address</label>
+                                <input type="text" name="address" class="form-control" id="address"
+                                       placeholder="Address" required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid Address.
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label for="bdate">Birth Date</label>
+                                <input type="date" name="bdate" class="form-control" id="bdate">
+                                <div class="invalid-feedback">
+                                    Please provide a valid Address.
+                                </div>
+                            </div>
+                            <br>
+                            <div class="mt-4">
+                                <button class="btn btn-primary" name="btnSubmit" type="submit">Create</button>
+                                <button class="btn btn-danger" name="btnCancel" type="submit">Cancel</button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

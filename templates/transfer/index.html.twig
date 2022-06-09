@@ -3,12 +3,73 @@
 {% block title %}Hello TransferController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-</div>
+    <h2>Transfer Funds</h2>
+    <div class="card">
+        <div class="card-body">
+            <form class="form-horizontal" method="post">
+                <div class="row">
+                    <div class="row">
+                        <div class="form-group mb-4">
+                            <label for="name">Beneficiary Name</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="name"
+                                    name='name'
+                                    value=""
+                                    required
+                            />
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="account">Account Number</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="account"
+                                    name='account'
+                                    value=""
+                                    required
+                            />
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="branch">Select Branch</label>
+                            <select class="form-select" id="branch" name="loan_plan" required>
+                                <option selected>Open this select menu</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="amount">Amount</label>
+                            <input
+                                    type="number"
+                                    class="form-control"
+                                    id="amount"
+                                    name='amount'
+                                    value=""
+                                    required
+                            />
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button
+                                class="btn btn-success btn-block waves-effect waves-light"
+                                type="submit"
+                                name="btn_submit"
+                        >
+                            Submit
+                        </button>
+                        <button
+                                class="btn btn-danger btn-block waves-effect waves-light"
+                                type="submit"
+                                name="btn_submit"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
