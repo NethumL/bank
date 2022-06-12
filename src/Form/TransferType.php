@@ -24,10 +24,10 @@ class TransferType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $accounts = $this->accountRepository->findByUser($options['userId']);
-
-        $accountChoices = array_map(function ($account) {
-            return [$account['Account_Number'] . ": " . $account['Account_Type'] => $account['Account_Number']];
-        }, $accounts);
+        $accountChoices = [];
+        foreach ($accounts as $account) {
+            $accountChoices[$account['Account_Number'] . ": " . $account['Account_Type']] = $account['Account_Number'];
+        }
 
         $builder
             ->add('from', ChoiceType::class, ['choices' => $accountChoices])
