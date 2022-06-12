@@ -6,6 +6,7 @@ use App\Entity\Transaction;
 use App\Repository\AccountRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -32,7 +33,7 @@ class TransferType extends AbstractType
         $builder
             ->add('from', ChoiceType::class, ['choices' => $accountChoices])
             ->add('to', TextType::class)
-            ->add('type', TextType::class, ['disabled' => true])
+            ->add('type', HiddenType::class)
             ->add('amount', MoneyType::class, ['currency' => ''])
             ->add('transfer', SubmitType::class)
         ;
