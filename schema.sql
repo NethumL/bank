@@ -93,10 +93,11 @@ CREATE TABLE `Installment`
 
 CREATE TABLE `FD`
 (
-    `ID`             varchar(20) NOT NULL,
-    `Account_Number` varchar(20) NOT NULL,
-    `Plan_ID`        int         NOT NULL,
-    `Created_Time`   timestamp   NOT NULL,
+    `ID`             varchar(36)    NOT NULL,
+    `Account_Number` varchar(20)    NOT NULL,
+    `Plan_ID`        int            NOT NULL,
+    `Amount`         decimal(15, 2) NOT NULL,
+    `Created_Time`   timestamp      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`)
 );
