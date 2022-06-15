@@ -75,6 +75,7 @@ CREATE TABLE `Loan`
     `User_ID`   varchar(36)                          NOT NULL,
     `Loan_Type` enum ('PERSONAL', 'BUSINESS')        NOT NULL,
     `Status`    enum ('CREATED', 'APPROVED', 'PAID') NOT NULL,
+    `Amount`    decimal(15,2)                        NOT NULL,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`)
 );

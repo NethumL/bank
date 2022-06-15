@@ -45,6 +45,11 @@ class Loan
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="decimal", precision=15, scale=2)
+     */
+    private $amount;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -82,6 +87,18 @@ class Loan
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAmount(): ?string
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(string $amount): self
+    {
+        $this->amount = $amount;
 
         return $this;
     }
