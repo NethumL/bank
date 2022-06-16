@@ -2,16 +2,33 @@
 
 namespace App\Controller;
 
+use App\Entity\Loan;
+use App\Form\OnlineLoanType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class LoanController extends AbstractController
 {
-    #[Route('/loan/online', name: 'app_loan_online')]
-    public function online(): Response
+    #[Route('/loan/online', name: 'app_loan_online', methods: ['GET', 'POST'])]
+    public function online(Request $request): Response
     {
-        return $this->render('loan/online.html.twig', [
+        $onlineLoan = new Loan();
+
+        $form = $this->createForm(OnlineLoanType::class, $onlineLoan);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $onlineLoan = $form->getData();
+
+            // Save data
+
+            return $this->redirectToRoute('app_loan_online');
+        }
+
+        return $this->renderForm('loan/online.html.twig', [
+            'form' => $form,
             'controller_name' => 'LoanController',
         ]);
     }

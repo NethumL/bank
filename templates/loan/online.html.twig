@@ -6,46 +6,8 @@
     <h2>Online Loan Request</h2>
     <div class="card">
         <div class="card-body">
-            <form class="form-horizontal" method="post">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group mb-4">
-                            <label for="amount">Amount Rs:</label>
-                            <input
-                                    type="number"
-                                    class="form-control"
-                                    id="amount"
-                                    name='amount'
-                                    {#                            placeholder="Your Username" #}
-                                    value=""
-                                    required
-                            />
-                        </div>
-                        <div class="form-group mb-4">
-                            <label for="description">Description</label>
-                            <textarea
-                                    type="password"
-                                    class="form-control"
-                                    id="description"
-                                    name="description"
-                                    required
-                            ></textarea>
-                        </div>
-
-
-                        <div class="mt-4">
-                            <button
-                                    class="btn btn-success btn-block waves-effect waves-light"
-                                    type="submit"
-                                    name="btn_submit"
-                            >
-                                Submit
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-            </form>
+            <p>Maximum attainable loan amount: </p>
+            {{ form(form) }}
         </div>
     </div>
 {% endblock %}
