@@ -47,16 +47,21 @@
                             <h5 class="mb-5 text-center">
                                 Sign in to continue to DR BANK.
                             </h5>
-                            <form class="form-horizontal" method="post">
+                            <form class="form-horizontal" method="post" action="{{ path('app_auth_login') }}">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group mb-4">
+                                            {% if error %}
+                                                <div class="text-center text-danger">
+                                                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                                                </div>
+                                            {% endif %}
                                             <label for="txt_username">Username</label>
                                             <input
                                                     type="text"
                                                     class="form-control"
                                                     id="txt_username"
-                                                    name='txt_username'
+                                                    name="_username"
                                                     placeholder="Your Username"
                                                     value=""
                                                     required
@@ -69,7 +74,7 @@
                                                     type="password"
                                                     class="form-control"
                                                     id="userpassword"
-                                                    name="txt_password"
+                                                    name="_password"
                                                     placeholder="Enter password"
                                                     required
                                             />
