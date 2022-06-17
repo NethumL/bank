@@ -45,6 +45,13 @@ class Fd
      */
     private $plan;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Amount", type="decimal", precision=15, scale=2, nullable=false)
+     */
+    private $amount;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -86,5 +93,15 @@ class Fd
         return $this;
     }
 
+    public function getAmount(): ?string
+    {
+        return $this->amount;
+    }
 
+    public function setAmount(string $amount): self
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
 }
