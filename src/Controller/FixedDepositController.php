@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FixedDepositController extends AbstractController
 {
-    #[Route('/fixed-deposit/{id}', name: 'app_fixed_deposit')]
+    #[Route('/fixed-deposit/{id}', name: 'app_fixed_deposit', defaults: ['id' => ''])]
     public function index(string $id, Request $request, AccountRepository $accountRepository, FdRepository $fdRepository): Response
     {
         $user = $this->getUser();
