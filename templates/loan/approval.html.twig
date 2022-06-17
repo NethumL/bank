@@ -3,12 +3,53 @@
 {% block title %}Hello LoanController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<h2>Loan Approve Form</h2>
+    <div class="card">
+        <div class="card-body">
+        <div class="row align-items-start">
+            <div class="col">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Loan Id</th>
+                            <th>Name</th>
+                            <th>Account Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr onclick="window.location='#';">
+                            <td>1234</td>
+                            <td>John Doe</td>
+                            <td>123456789</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-</div>
+            </div>
+            <div class="col">
+                <label for="name">Customer Name</label>
+                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
+                       value="" required disabled>
+                <label for="name">Account No:</label>
+                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
+                       value="" required disabled>
+                <label for="name">Loan Plan</label>
+                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
+                       value="" required disabled>
+                <label for="name">Duration</label>
+                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
+                       value="" required disabled>
+                <label for="name">Amount</label>
+                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
+                       value="" required disabled>
+                <div class="mt-4">
+
+                    <button class="btn btn-primary waves-effect waves-light" name="btnSubmit" type="submit">Approve</button>
+                    <button class="btn btn-danger waves-effect waves-light" name="btnCancel" type="submit">Reject</button>
+                </div>
+
+            </div>
+        </div>
+        </div>
+    </div>
 {% endblock %}

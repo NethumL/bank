@@ -3,12 +3,47 @@
 {% block title %}Hello InstalmentController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h2>Pay Loan Installment</h2>
+    <div class="card px-4">
+        <div class="card-body">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-</div>
+            <p class="h8 py-3">Payment Details</p>
+            <div class="row gx-3">
+                <div class="col-12">
+                    <div class="d-flex flex-column">
+                        <label class="text mb-1"> Credit Card Number</label>
+                        <input class="form-control mb-3" type="text" placeholder="1234 5678 435678">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex flex-column">
+                        <label class="text mb-1">Expiry</label>
+                        <input class="form-control mb-3" type="month" placeholder="MM/YYYY">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex flex-column">
+                        <label class="text mb-1">CVV/CVC</label>
+                        <input class="form-control mb-3 pt-2 " type="password" placeholder="***">
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button
+                            class="btn btn-success btn-block waves-effect waves-light"
+                            type="submit"
+                            name="btn_submit"
+                    >
+                        Submit
+                    </button>
+                    <button
+                            class="btn btn-danger btn-block waves-effect waves-light"
+                            type="submit"
+                            name="btn_submit"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
