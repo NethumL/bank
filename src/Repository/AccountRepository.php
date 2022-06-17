@@ -34,4 +34,11 @@ class AccountRepository extends ServiceEntityRepository
         $result = $stmt->executeQuery([$id]);
         return $result->fetchAssociative();
     }
+
+    public function updateAmount(string $id, string $newAmount): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("UPDATE Account SET Amount = ? WHERE Account_Number = ?");
+        return $stmt->executeStatement([$newAmount, $id]);
+    }
 }
