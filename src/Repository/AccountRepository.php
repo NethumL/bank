@@ -26,4 +26,12 @@ class AccountRepository extends ServiceEntityRepository
         $resultSet = $stmt->executeQuery($params);
         return $resultSet->fetchAllAssociative();
     }
+
+    public function findOne(string $id): array|bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM Account WHERE Account_Number = ?");
+        $result = $stmt->executeQuery([$id]);
+        return $result->fetchAssociative();
+    }
 }
