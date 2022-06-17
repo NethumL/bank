@@ -26,7 +26,7 @@ class TransactionRepository extends ServiceEntityRepository
     public function insert(Transaction $transaction): int
     {
         $conn = $this->getEntityManager()->getConnection();
-        $stmt = $conn->prepare("INSERT INTO Transaction VALUES(?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO Transaction(Transaction_ID, `From`, `To`, Type, Amount) VALUES(?, ?, ?, ?, ?)");
         return $stmt->executeStatement([
             Uuid::v4(),
             $transaction->getFrom(),

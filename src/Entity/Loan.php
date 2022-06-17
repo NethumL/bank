@@ -45,9 +45,28 @@ class Loan
      */
     private $user;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Created_Time", type="datetime", nullable=false)
+     */
+    private $createdTime;
+
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function getCreatedTime(): ?\DateTimeInterface
+    {
+        return $this->createdTime;
+    }
+
+    public function setCreatedTime(\DateTimeInterface $createdTime): self
+    {
+        $this->createdTime = $createdTime;
+
+        return $this;
     }
 
     public function getLoanType(): ?string

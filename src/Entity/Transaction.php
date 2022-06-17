@@ -49,9 +49,28 @@ class Transaction
      */
     private $from;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Created_Time", type="datetime", nullable=false)
+     */
+    private $createdTime;
+
     public function getTransactionId(): ?string
     {
         return $this->transactionId;
+    }
+
+    public function getCreatedTime(): ?\DateTimeInterface
+    {
+        return $this->createdTime;
+    }
+
+    public function setCreatedTime(\DateTimeInterface $createdTime): self
+    {
+        $this->createdTime = $createdTime;
+
+        return $this;
     }
 
     public function getTo(): ?string
