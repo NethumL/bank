@@ -58,6 +58,7 @@ CREATE TABLE `Transaction`
     `Type`           enum ('WITHDRAWAL', 'TRANSFER') NOT NULL,
     `Amount`         decimal(15, 2)                  NOT NULL,
     `Created_Time`   timestamp                       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `Description`    text                            NULL     DEFAULT NULL,
     PRIMARY KEY (`Transaction_ID`),
     FOREIGN KEY (`From`) REFERENCES `Account` (`Account_Number`)
 );

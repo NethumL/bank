@@ -35,6 +35,7 @@ class TransferType extends AbstractType
             ->add('to', TextType::class)
             ->add('type', HiddenType::class)
             ->add('amount', MoneyType::class, ['currency' => ''])
+            ->add('description', TextType::class, ['required' => false])
             ->add('transfer', SubmitType::class)
         ;
     }
