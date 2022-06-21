@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Transaction;
 use App\Repository\AccountRepository;
+use App\Validator\AccountExists;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -32,7 +33,7 @@ class TransferType extends AbstractType
 
         $builder
             ->add('from', ChoiceType::class, ['choices' => $accountChoices])
-            ->add('to', TextType::class)
+            ->add('to', TextType::class, ['constraints' => [new AccountExists()]])
             ->add('type', HiddenType::class)
             ->add('amount', MoneyType::class, ['currency' => ''])
             ->add('description', TextType::class, ['required' => false])
