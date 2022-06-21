@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Validator\HasSufficientFunds;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="Transaction", indexes={@ORM\Index(name="From", columns={"From"})})
  * @ORM\Entity
+ * @HasSufficientFunds
  */
 class Transaction
 {
