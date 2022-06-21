@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Positive;
 
 class TransferType extends AbstractType
 {
@@ -35,7 +36,7 @@ class TransferType extends AbstractType
             ->add('from', ChoiceType::class, ['choices' => $accountChoices])
             ->add('to', TextType::class, ['constraints' => [new AccountExists()]])
             ->add('type', HiddenType::class)
-            ->add('amount', MoneyType::class, ['currency' => ''])
+            ->add('amount', MoneyType::class, ['currency' => '', 'constraints' => [new Positive()]])
             ->add('description', TextType::class, ['required' => false])
             ->add('transfer', SubmitType::class)
         ;
