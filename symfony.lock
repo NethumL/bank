@@ -83,6 +83,9 @@
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
+    "moneyphp/money": {
+        "version": "v4.0.4"
+    },
     "monolog/monolog": {
         "version": "2.5.0"
     },
