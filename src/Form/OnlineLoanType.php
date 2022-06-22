@@ -14,24 +14,30 @@ class OnlineLoanType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('loanType', ChoiceType::class, [
-                'choices' => [
-                    'Personal' => 'PERSONAL',
-                    'Business' => 'BUSINESS'
-                ]
-            ])
-            ->add('amount', MoneyType::class, [
-                'currency' => 'LKR'
-            ])
-            ->add('submit', SubmitType::class)
-        ;
+        $loanEligibility = $options['loanEligibility'];
+        if ($loanEligibility) {
+            $builder
+                ->add('loanType', ChoiceType::class, [
+                    'choices' => [
+                        'Personal' => 'PERSONAL',
+                        'Business' => 'BUSINESS'
+                    ]
+                ])
+                ->add('amount', MoneyType::class, [
+                    'currency' => 'LKR'
+                ])
+                ->add('submit', SubmitType::class)
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Loan::class,
+            'loanEligibility' => true
         ]);
+
+        $resolver->setAllowedTypes('loanEligibility', 'bool');
     }
 }
