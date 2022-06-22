@@ -69,6 +69,16 @@ CREATE TABLE `FD_Plan`
     PRIMARY KEY (`ID`)
 );
 
+CREATE TABLE `FD`
+(
+    `ID`             varchar(20) NOT NULL,
+    `Account_Number` varchar(20) NOT NULL,
+    `Plan_ID`        int         NOT NULL,
+    `Created_Time`   timestamp   NOT NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`)
+);
+
 CREATE TABLE `Loan`
 (
     `ID`        varchar(36)                          NOT NULL,
@@ -76,8 +86,27 @@ CREATE TABLE `Loan`
     `Loan_Type` enum ('PERSONAL', 'BUSINESS')        NOT NULL,
     `Status`    enum ('CREATED', 'APPROVED', 'PAID') NOT NULL,
     `Amount`    decimal(15,2)                        NOT NULL,
+    `Loan_Mode` enum ('NORMAL', 'ONLINE')        NOT NULL,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`)
+);
+
+CREATE TABLE `Normal_Loan`
+(
+    `ID`        varchar(36)                          NOT NULL,
+    `Account_Number` varchar(20)                     NOT NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`ID`) REFERENCES `Loan` (`ID`),
+    FOREIGN KEY (`Account_Number`) REFERENCES `Account` (`Account_Number`)
+);
+
+CREATE TABLE `Online_Loan`
+(
+    `ID`        varchar(36)                 NOT NULL,
+    `FD_ID`     varchar(20)                 NOT NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`ID`) REFERENCES `Loan` (`ID`),
+    FOREIGN KEY (`FD_ID`) REFERENCES `FD` (`ID`)
 );
 
 CREATE TABLE `Installment`
@@ -90,14 +119,4 @@ CREATE TABLE `Installment`
     `Status`  enum ('CREATED', 'PAID') NOT NULL,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`Loan_ID`) REFERENCES `Loan` (`ID`)
-);
-
-CREATE TABLE `FD`
-(
-    `ID`             varchar(20) NOT NULL,
-    `Account_Number` varchar(20) NOT NULL,
-    `Plan_ID`        int         NOT NULL,
-    `Created_Time`   timestamp   NOT NULL,
-    PRIMARY KEY (`ID`),
-    FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`)
 );

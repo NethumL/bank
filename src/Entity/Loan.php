@@ -4,55 +4,25 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Loan
- *
- * @ORM\Table(name="Loan", indexes={@ORM\Index(name="User_ID", columns={"User_ID"})})
- * @ORM\Entity
- */
 class Loan
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ID", type="string", length=36, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Loan_Type", type="string", length=0, nullable=false)
-     */
-    private $loanType;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Status", type="string", length=0, nullable=false)
-     */
-    private $status;
-
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="User_ID", referencedColumnName="ID")
-     * })
-     */
     private $user;
-
-    /**
-     * @ORM\Column(type="decimal", precision=15, scale=2)
-     */
+    private $loanType;
+    private $status;
     private $amount;
+    private $loanMode;
 
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getLoanType(): ?string
@@ -103,5 +73,15 @@ class Loan
         return $this;
     }
 
+    public function getLoanMode(): ?string
+    {
+        return $this->loanMode;
+    }
 
+    public function setLoanMode(string $mode): self
+    {
+        $this->loanMode = $mode;
+
+        return $this;
+    }
 }
