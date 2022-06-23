@@ -105,6 +105,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/friendsofphp/proxy-manager-lts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/stopwatch" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpstan/phpdoc-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/data-fixtures" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/uid" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-uuid" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

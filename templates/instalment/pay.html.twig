@@ -3,47 +3,51 @@
 {% block title %}Hello InstalmentController!{% endblock %}
 
 {% block body %}
-    <h2>Pay Loan Installment</h2>
-    <div class="card px-4">
-        <div class="card-body">
+    <div class="row justify-content-md-center">
+        <h2>Pay Loan Installment</h2>
+        <div class="card w-50">
+            <div class="card-body">
+                <form class="needs-validation" method="post">
+                    <div class="row mb-3">
+                        <h4>Payment Details</h4>
+                        <label for="cardNumber" class="col-sm-2 col-form-label"> Credit Card Number</label>
+                        <div class="col-sm-10">
+                            <input id="cardNumber" class="form-control" type="text"
+                                   placeholder="1234 5678 435678">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="expiryDate" class="col-sm-2 col-form-label">Expiry</label>
+                        <div class="col-6">
+                            <input id="expiryDate" class="form-control mb-3" type="month" placeholder="MM/YYYY">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="cvv" class="col-sm-2 col-form-label">CVV/CVC</label>
+                        <div class="col-6">
+                            <input id="cvv" class="form-control mb-3 pt-2 " type="password" placeholder="***">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button
+                                class="btn btn-success btn-block waves-effect waves-light"
+                                type="submit"
+                                name="btn_submit"
+                        >
+                            Submit
+                        </button>
+                        <button
+                                class="btn btn-danger btn-block waves-effect waves-light"
+                                type="submit"
+                                name="btn_submit"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
 
-            <p class="h8 py-3">Payment Details</p>
-            <div class="row gx-3">
-                <div class="col-12">
-                    <div class="d-flex flex-column">
-                        <label class="text mb-1"> Credit Card Number</label>
-                        <input class="form-control mb-3" type="text" placeholder="1234 5678 435678">
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="d-flex flex-column">
-                        <label class="text mb-1">Expiry</label>
-                        <input class="form-control mb-3" type="month" placeholder="MM/YYYY">
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="d-flex flex-column">
-                        <label class="text mb-1">CVV/CVC</label>
-                        <input class="form-control mb-3 pt-2 " type="password" placeholder="***">
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <button
-                            class="btn btn-success btn-block waves-effect waves-light"
-                            type="submit"
-                            name="btn_submit"
-                    >
-                        Submit
-                    </button>
-                    <button
-                            class="btn btn-danger btn-block waves-effect waves-light"
-                            type="submit"
-                            name="btn_submit"
-                    >
-                        Cancel
-                    </button>
-                </div>
             </div>
         </div>
     </div>
+
 {% endblock %}
