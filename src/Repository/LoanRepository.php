@@ -21,4 +21,12 @@ class LoanRepository extends ServiceEntityRepository
         $resultSet = $stmt->executeQuery([$userId]);
         return $resultSet->fetchAllAssociative();
     }
+
+    public function findOnlineLoansByUser(string $userId): array|bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM Loan L RIGHT JOIN Online_Loan USING(ID) WHERE L.User_ID = ?");
+        $resultSet = $stmt->executeQuery([$userId]);
+        return $resultSet->fetchAllAssociative();
+    }
 }
