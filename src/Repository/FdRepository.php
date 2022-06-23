@@ -22,7 +22,7 @@ class FdRepository extends ServiceEntityRepository
         $resultSet = $stmt->executeQuery([$userId]);
         return $resultSet->fetchAllAssociative();
     }
-}
+
     public function insert(array $fd): int
     {
         $conn = $this->getEntityManager()->getConnection();
