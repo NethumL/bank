@@ -14,9 +14,16 @@ class LoanController extends AbstractController
     #[Route('/loan/online', name: 'app_loan_online', methods: ['GET', 'POST'])]
     public function online(Request $request): Response
     {
+        $user = $this->getUser();
         $onlineLoan = new Loan();
+        // TODO: calculate the loan eligibility
+        $loanEligibility = true;
 
-        $form = $this->createForm(OnlineLoanType::class, $onlineLoan);
+        $form = $this->createForm(
+            OnlineLoanType::class,
+            $onlineLoan,
+            ['loanEligibility' => $loanEligibility]
+        );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
