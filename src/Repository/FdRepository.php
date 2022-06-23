@@ -6,6 +6,7 @@ use App\Entity\Account;
 use App\Entity\Fd;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 class FdRepository extends ServiceEntityRepository
 {
@@ -22,3 +23,16 @@ class FdRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
     }
 }
+    public function insert(array $fd): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("INSERT INTO FD(ID, Account_Number, Plan_ID, Amount) VALUES(?, ?, ?, ?)");
+        return $stmt->executeStatement([
+            Uuid::v4(),
+            $fd['savingsAccount'],
+            $fd['plan'],
+            $fd['amount']
+        ]);
+    }
+}
+
