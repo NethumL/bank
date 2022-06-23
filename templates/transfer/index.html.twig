@@ -7,74 +7,36 @@
     <h2>Transfer Funds</h2>
     <div class="card w-50">
         <div class="card-body">
-            <form class="needs-validation" method="post">
-                <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="name">Beneficiary Name</label>
-                    <div class="col-sm-10">
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="name"
-                                name='name'
-                                value=""
-                                required
-                        />
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="row">
+                        {{ form_errors(form) }}
+                        <div class="form-group mb-4">
+                            {{ form_label(form.from, 'From Account') }}
+                            {{ form_errors(form.from) }}
+                            {{ form_widget(form.from) }}
+                        </div>
+                        <div class="form-group mb-4">
+                            {{ form_label(form.to, 'Beneficiary Account Number') }}
+                            {{ form_errors(form.to) }}
+                            {{ form_widget(form.to) }}
+                        </div>
+                        <div class="form-group mb-4">
+                            {{ form_label(form.amount) }}
+                            {{ form_errors(form.amount) }}
+                            {{ form_widget(form.amount) }}
+                        </div>
+                        <div class="form-group mb-4">
+                            {{ form_label(form.description) }}
+                            {{ form_errors(form.description) }}
+                            {{ form_widget(form.description) }}
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        {{ form_widget(form.transfer, {'attr': {'class': 'btn-success'}}) }}
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="account">Account Number</label>
-                    <div class="col-sm-10">
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="account"
-                                name='account'
-                                value=""
-                                required
-                        />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                <label class="col-sm-2 col-form-label" for="branch">Select Branch</label>
-                    <div class="col-sm-10">
-                        <select class="form-select" id="branch" name="loan_plan" required>
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                <label class="col-sm-2 col-form-label" for="amount">Amount</label>
-                    <div class="col-sm-10">
-                        <input
-                                type="number"
-                                class="form-control"
-                                id="amount"
-                                name='amount'
-                                value=""
-                                required
-                        />
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <button
-                            class="btn btn-success btn-block waves-effect waves-light"
-                            type="submit"
-                            name="btn_submit"
-                    >
-                        Submit
-                    </button>
-                    <button
-                            class="btn btn-danger btn-block waves-effect waves-light"
-                            type="submit"
-                            name="btn_submit"
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </form>
+            {{ form_end(form) }}
         </div>
     </div>
 </div>

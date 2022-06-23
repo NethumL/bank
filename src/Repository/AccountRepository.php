@@ -13,11 +13,32 @@ class AccountRepository extends ServiceEntityRepository
         parent::__construct($registry, Account::class);
     }
 
-    public function findByUser(string $userId): array|bool
+    public function findByUser(string $userId, string $accountType = ""): array|bool
     {
         $conn = $this->getEntityManager()->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM Account A WHERE A.User_ID = ?");
-        $resultSet = $stmt->executeQuery([$userId]);
+        $sql = "SELECT * FROM Account A WHERE A.User_ID = ?";
+        $params = [$userId];
+        if ($accountType) {
+            $sql .= " AND A.Account_Type = ?";
+            $params[] = $accountType;
+        }
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery($params);
         return $resultSet->fetchAllAssociative();
+    }
+
+    public function findOne(string $id): array|bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM Account WHERE Account_Number = ?");
+        $result = $stmt->executeQuery([$id]);
+        return $result->fetchAssociative();
+    }
+
+    public function updateAmount(string $id, string $newAmount): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("UPDATE Account SET Amount = ? WHERE Account_Number = ?");
+        return $stmt->executeStatement([$newAmount, $id]);
     }
 }

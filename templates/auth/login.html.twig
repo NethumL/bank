@@ -47,24 +47,21 @@
                             <h5 class="mb-5 text-center">
                                 Sign in to continue to DR BANK.
                             </h5>
-                            <form class="form-horizontal" method="post">
+                            <form class="form-horizontal" method="post" action="{{ path('app_auth_login') }}">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group mb-4">
                                             {% if error %}
-                                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                                            {% endif %}
-                                            {% if app.user %}
-                                                <div class="mb-3">
-                                                    You are logged in as {{ app.user.username }}, <a href="{{ path('app_auth_logout') }}">Logout</a>
+                                                <div class="text-center text-danger">
+                                                    {{ error.messageKey|trans(error.messageData, 'security') }}
                                                 </div>
                                             {% endif %}
-                                            <label for="inputUsername">Username</label>
+                                            <label for="txt_username">Username</label>
                                             <input
                                                     type="text"
                                                     class="form-control"
-                                                    id="inputUsername"
-                                                    name='_username'
+                                                    id="txt_username"
+                                                    name="_username"
                                                     placeholder="Your Username"
                                                     value="{{last_username}}"
                                                     required
@@ -77,7 +74,7 @@
                                             <input
                                                     type="password"
                                                     class="form-control"
-                                                    id="inputPassword"
+                                                    id="userpassword"
                                                     name="_password"
                                                     placeholder="Enter password"
                                                     required
@@ -86,6 +83,8 @@
                                         <input type="hidden" name="_csrf_token"
                                                value="{{ csrf_token('authenticate') }}"
                                         >
+
+                                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('login') }}">
 
                                         <div class="mt-4">
                                             <button

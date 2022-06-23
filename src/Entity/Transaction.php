@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Validator\HasSufficientFunds;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="Transaction", indexes={@ORM\Index(name="From", columns={"From"})})
  * @ORM\Entity
+ * @HasSufficientFunds
  */
 class Transaction
 {
@@ -49,9 +51,35 @@ class Transaction
      */
     private $from;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Created_Time", type="datetime", nullable=false)
+     */
+    private $createdTime;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Description", type="text", nullable=true)
+     */
+    private $description;
+
     public function getTransactionId(): ?string
     {
         return $this->transactionId;
+    }
+
+    public function getCreatedTime(): ?\DateTimeInterface
+    {
+        return $this->createdTime;
+    }
+
+    public function setCreatedTime(\DateTimeInterface $createdTime): self
+    {
+        $this->createdTime = $createdTime;
+
+        return $this;
     }
 
     public function getTo(): ?string
@@ -98,6 +126,18 @@ class Transaction
     public function setFrom(?string $from): self
     {
         $this->from = $from;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
