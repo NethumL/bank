@@ -73,6 +73,7 @@
                         </form>
                     </div>
                 </div>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
                 <div class="dropdown d-inline-block">
                     <button type="button" class="btn header-item noti-icon waves-effect dropdown-toggle" id="page-header-notifications-dropdown"
@@ -161,7 +162,6 @@
                     </div>
                 </div>
 
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <div class="dropdown d-inline-block">
                     <button type="button" class="btn header-item waves-effect dropdown-toggle" id="page-header-user-dropdown"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -177,6 +177,8 @@
                         <a class="dropdown-item" href="{{ path('app_auth_logout') }}"><i class="mdi mdi-logout font-size-16 align-middle mr-1"></i> Logout</a>
                     </div>
                 </div>
+                {% else %}
+                    <a href="{{path('app_auth_login')}}">Login</a>
                 {% endif %}
             </div>
         </div>
@@ -188,7 +190,7 @@
 
                 <div class="collapse navbar-collapse" id="topnav-menu-content">
                     <ul class="navbar-nav">
-                        {% if app.user.getUserType == "CUSTOMER" %}
+                        {% if is_granted('ROLE_CUSTOMER') %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_transfer') }}">
                                     <i class="mdi mdi-storefront mr-2"></i>Transactions
@@ -214,7 +216,7 @@
                             </li>
                         {% endif %}
 
-                        {% if app.user.getUserType == "ADMIN" %}
+                        {% if is_granted('ROLE_MANAGER') %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_report_generate') }}">
                                     <i class="mdi mdi mdi mdi mdi-book-open mr-2"></i>Report
