@@ -45,7 +45,7 @@ class FixedDepositType extends AbstractType
                 'constraints' => new Range([
                     'min' => 0, 'max' => floatval($maxAmount), 'notInRangeMessage' => 'Deposit must be between {{ min }} and {{ max }}'
                 ]),
-                'label' => 'Amount (limit: ' . $maxAmount . ')'
+                'label' => 'Amount (<' . $maxAmount . ')'
             ])
             ->add('agree', CheckboxType::class, [
                 'label' => 'Agree to Terms and Conditions',
