@@ -107,7 +107,7 @@ CREATE TABLE `Normal_Loan`
 CREATE TABLE `Online_Loan`
 (
     `ID`        varchar(36)                 NOT NULL,
-    `FD_ID`     varchar(20)                 NOT NULL,
+    `FD_ID`     varchar(36)                 NOT NULL,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`ID`) REFERENCES `Loan` (`ID`),
     FOREIGN KEY (`FD_ID`) REFERENCES `FD` (`ID`)
