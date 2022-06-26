@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="Online_Loan", indexes={@ORM\Index(name="Online_Loan", columns={"ID"})})
  * @ORM\Entity
  */
-class OnlineLoan
+class OnlineLoan extends Loan
 {
     private $fdId;
 
