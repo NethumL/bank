@@ -89,6 +89,15 @@ VALUES (
             15000
        );
 
+INSERT INTO `fd`
+(ID, Account_Number, Plan_ID, Amount)
+VALUES (
+           'f15ae975-235e-46a1-80c5-e29e34a62233',
+           'ABCDEFGHIJ1234567890',
+           1,
+           30000
+       );
+
 -- loan table
 INSERT INTO `loan`
 (ID, User_ID, Loan_Type, Status, Amount, Loan_Mode)
