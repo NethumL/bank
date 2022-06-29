@@ -16,14 +16,20 @@ class OnlineLoanType extends AbstractType
     {
         $loanEligibility = $options['loanEligibility'];
         $eligibleFdList = $options['eligibleFdList'];
-        $fdChoiceList = [];
-        foreach ($eligibleFdList as $fd) {
-            $fdChoiceList[$fd['Account_Number']] = $fd['Account_Number'];
+        $choicesList = [];
+        $attrList = [];
+        foreach ($eligibleFdList as $id=>$value) {
+            $choicesList[$id] = $id;
+            $attrList[$id] = [
+                'data-amount' => $value
+            ];
         }
+
         if ($loanEligibility) {
             $builder
                 ->add('fdId', ChoiceType::class, [
-                    'choices' => $fdChoiceList,
+                    'choices' => $choicesList,
+                    'choice_attr' => $attrList
                 ])
                 ->add('loanType', ChoiceType::class, [
                     'choices' => [

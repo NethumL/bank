@@ -7,6 +7,7 @@ use App\Entity\OnlineLoan;
 use App\Form\OnlineLoanType;
 use App\Repository\FdRepository;
 use App\Repository\LoanRepository;
+use App\Util\MoneyUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class LoanController extends AbstractController
 {
     #[Route('/loan/online', name: 'app_loan_online', methods: ['GET', 'POST'])]
-    public function online(Request $request, FdRepository $fdRepository, LoanRepository $loanRepository): Response
+    public function online(
+        Request $request,
+        FdRepository $fdRepository,
+        LoanRepository $loanRepository,
+        MoneyUtils $moneyUtils
+    ): Response
     {
         $user = $this->getUser();
         $onlineLoanObj = new OnlineLoan();
@@ -36,7 +42,14 @@ class LoanController extends AbstractController
                 }
             }
             if (!$loanBorrowed) {
-                $eligibleFdList[] = $fd;
+                $fdAmount = $fd['Amount'];
+                $fdFraction = $moneyUtils->parseString($fdAmount)->multiply('0.6');
+                $onlineLoanUpperBound = $moneyUtils->parseString('500000.00');
+                $allowableAmount = $moneyUtils->format(
+                                    $onlineLoanUpperBound
+                                        ->lessThan($fdFraction) ? $onlineLoanUpperBound : $fdFraction
+                                    );
+                $eligibleFdList[$fd['ID']] = $allowableAmount;
             }
         }
 
