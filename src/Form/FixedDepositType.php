@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Repository\AccountRepository;
 use App\Repository\FdPlanRepository;
+use App\Validator\HasSufficientFundsForFd;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -61,6 +62,7 @@ class FixedDepositType extends AbstractType
     {
         $resolver->setDefaults([
             'userId' => null,
+            'constraints' => [new HasSufficientFundsForFd()]
         ]);
 
         $resolver->addAllowedTypes('userId', 'string');
