@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\InstalmentPaymentType;
 use App\Repository\InstalmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,7 @@ class InstalmentController extends AbstractController
     #[Route('/instalment/view', name: 'app_instalment_view', methods: ['GET'])]
     public function view(InstalmentRepository $instalmentRepository): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $instalments = $instalmentRepository->findAllByUser($user->getId());
         return $this->render('instalment/view.html.twig', [
@@ -25,6 +27,7 @@ class InstalmentController extends AbstractController
     #[Route('/instalment/pay/{id}', name: 'app_instalment_pay', methods: ['GET', 'POST'])]
     public function pay(string $id, Request $request, InstalmentRepository $instalmentRepository): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $instalment = $instalmentRepository->findOneById($id);
         if (!$instalment || $instalment['User_ID'] != $user->getId() || $instalment['Status'] == 'PAID') {

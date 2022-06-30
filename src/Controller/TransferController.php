@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Transaction;
+use App\Entity\User;
 use App\Form\TransferType;
 use App\Repository\AccountRepository;
 use App\Repository\TransactionRepository;
@@ -31,6 +32,7 @@ class TransferController extends AbstractController
         MoneyUtils            $moneyUtils
     ): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
 
         $transfer = new Transaction();
@@ -39,7 +41,7 @@ class TransferController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* @var Transaction */
+            /** @var Transaction */
             $transfer = $form->getData();
             $transfer->setType("TRANSFER");
 

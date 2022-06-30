@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\FixedDepositType;
 use App\Repository\AccountRepository;
 use App\Repository\FdRepository;
@@ -30,6 +31,7 @@ class FixedDepositController extends AbstractController
         MoneyUtils        $moneyUtils
     ): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
 
         $fd = [];
