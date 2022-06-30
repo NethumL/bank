@@ -10,22 +10,22 @@
             {{ form_start(form, {'attr': {'class': 'needs-validation', 'data-savings-id': form.savingsAccount.vars.id, 'data-amount-id': form.amount.vars.id}}) }}
                 <div class="row mb-3">
                     {{ form_errors(form) }}
-                    {{ form_label(form.savingsAccount, 'Savings Account', {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                    <div class="col-sm-10">
+                    {{ form_label(form.savingsAccount, 'Savings Account', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
                         {{ form_errors(form.savingsAccount) }}
                         {{ form_widget(form.savingsAccount) }}
                     </div>
                 </div>
                 <div class="row mb-3">
-                    {{ form_label(form.plan, 'Plan', {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                    <div class="col-sm-10">
+                    {{ form_label(form.plan, 'Plan', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
                         {{ form_errors(form.plan) }}
                         {{ form_widget(form.plan) }}
                     </div>
                 </div>
                 <div class="row mb-3">
-                    {{ form_label(form.amount, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-                    <div class="col-sm-10">
+                    {{ form_label(form.amount, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
                         {{ form_errors(form.amount) }}
                         {{ form_widget(form.amount) }}
                     </div>
