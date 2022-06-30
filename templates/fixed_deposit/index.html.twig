@@ -7,7 +7,7 @@
     <h2>Start a Fixed Deposit</h2>
     <div class="card w-50">
         <div class="card-body">
-            {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+            {{ form_start(form, {'attr': {'class': 'needs-validation', 'data-savings-id': form.savingsAccount.vars.id, 'data-amount-id': form.amount.vars.id}}) }}
                 <div class="row mb-3">
                     {{ form_errors(form) }}
                     {{ form_label(form.savingsAccount, 'Savings Account', {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
@@ -39,4 +39,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('fixed_deposit') }}
 {% endblock %}
