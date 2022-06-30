@@ -22,9 +22,8 @@ class FixedDepositController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/fixed-deposit/{id}', name: 'app_fixed_deposit', defaults: ['id' => ''])]
+    #[Route('/fixed-deposit', name: 'app_fixed_deposit')]
     public function index(
-        string            $id,
         Request           $request,
         AccountRepository $accountRepository,
         FdRepository      $fdRepository,
@@ -33,24 +32,14 @@ class FixedDepositController extends AbstractController
     {
         $user = $this->getUser();
 
-        $savingsAccounts = $accountRepository->findByUser($user->getId(), "SAVINGS");
-        $savingsAccountNumbers = array_map(function ($account) {
-            return $account['Account_Number'];
-        }, $savingsAccounts);
-
-        if (!in_array($id, $savingsAccountNumbers)) {
-            return $this->redirectToRoute("app_account_view");
-        }
-
-        $fd = ['savingsAccount' => $id];
-        $form = $this->createForm(FixedDepositType::class, $fd, ['userId' => $user->getId(), 'savingsAccount' => $id]);
+        $fd = [];
+        $form = $this->createForm(FixedDepositType::class, $fd, ['userId' => $user->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $fd = $form->getData();
-            $fd['savingsAccount'] = $id;
 
-            $savingsAccount = $accountRepository->findOne($id);
+            $savingsAccount = $accountRepository->findOne($fd['savingsAccount']);
             $amountInAccount = $moneyUtils->parseString($savingsAccount['Amount']);
             $amountToDeposit = $moneyUtils->parseString($fd['amount']);
             $newAmountInAccount = $amountInAccount->subtract($amountToDeposit);
@@ -59,7 +48,7 @@ class FixedDepositController extends AbstractController
             $conn->beginTransaction();
             try {
                 $fdRepository->insert($fd);
-                $accountRepository->updateAmount($id, $moneyUtils->format($newAmountInAccount));
+                $accountRepository->updateAmount($savingsAccount['Account_Number'], $moneyUtils->format($newAmountInAccount));
                 $conn->commit();
             } catch (Exception $e) {
                 $conn->rollBack();

@@ -9,11 +9,10 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Positive;
 
 class FixedDepositType extends AbstractType
 {
@@ -34,18 +33,20 @@ class FixedDepositType extends AbstractType
             $planChoices[$plan['Duration'] . " months, " . $plan['Interest_Rate'] . "%"] = $plan['ID'];
         }
 
-        $savingsAccount = $this->accountRepository->findOne($options['savingsAccount']);
-        $maxAmount = $savingsAccount['Amount'];
+        $savingsAccounts = $this->accountRepository->findByUser($options['userId'], "SAVINGS");
+        $savingsAccountChoices = [];
+        $savingsAccountAttrs = [];
+        foreach ($savingsAccounts as $savingsAccount) {
+            $savingsAccountChoices[$savingsAccount['Account_Number']] = $savingsAccount['Account_Number'];
+            $savingsAccountAttrs[$savingsAccount['Account_Number']] = ['data-amount' => $savingsAccount['Amount']];
+        }
 
         $builder
-            ->add('savingsAccount', TextType::class, ['attr' => ['readonly' => true]])
+            ->add('savingsAccount', ChoiceType::class, ['choices' => $savingsAccountChoices, 'choice_attr' => $savingsAccountAttrs])
             ->add('plan', ChoiceType::class, ['choices' => $planChoices])
             ->add('amount', MoneyType::class, [
                 'currency' => '',
-                'constraints' => new Range([
-                    'min' => 0, 'max' => floatval($maxAmount), 'notInRangeMessage' => 'Deposit must be between {{ min }} and {{ max }}'
-                ]),
-                'label' => 'Amount (<' . $maxAmount . ')'
+                'constraints' => new Positive(message: "The amount must be positive"),
             ])
             ->add('agree', CheckboxType::class, [
                 'label' => 'Agree to Terms and Conditions',
@@ -60,10 +61,8 @@ class FixedDepositType extends AbstractType
     {
         $resolver->setDefaults([
             'userId' => null,
-            'savingsAccount' => null,
         ]);
 
         $resolver->addAllowedTypes('userId', 'string');
-        $resolver->addAllowedTypes('savingsAccount', 'string');
     }
 }
