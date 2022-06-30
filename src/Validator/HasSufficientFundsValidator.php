@@ -26,7 +26,11 @@ class HasSufficientFundsValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint): void
     {
-        if (null === $value || '' === $value) {
+        if (null === $value || '' === $value
+            || null === $value->getFrom() || '' === $value->getFrom()
+            || null === $value->getTo() || '' === $value->getTo()
+            || null === $value->getAmount() || '' === $value->getAmount()
+        ) {
             return;
         }
 
