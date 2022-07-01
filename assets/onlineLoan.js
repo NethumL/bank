@@ -1,8 +1,12 @@
-let fdList = document.getElementById('online_loan_fdId');
-let maxAmount = document.getElementById('max-amount');
+const form = document.querySelector('form[data-fd-select-id]');
 
-maxAmount.innerText = fdList.options[fdList.selectedIndex].dataset.amount;
+const fdSelectId = form.dataset.fdSelectId ?? 'online_loan_fdId';
+const amountLabel = document.getElementById('max-amount');
 
-fdList.addEventListener('change', () => {
-    maxAmount.innerText = fdList.options[fdList.selectedIndex].dataset.amount;
+const fdSelect = document.querySelector(`select#${fdSelectId}`);
+
+amountLabel.innerText = fdSelect.options[fdSelect.selectedIndex].dataset.amount;
+
+fdSelect.addEventListener('change', () => {
+    amountLabel.innerText = fdSelect.options[fdSelect.selectedIndex].dataset.amount;
 })

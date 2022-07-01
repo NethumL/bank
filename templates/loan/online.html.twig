@@ -12,7 +12,18 @@
     <div class="card">
         <div class="card-body">
             <p>Maximum attainable loan amount (LKR): <span id="max-amount"></span></p>
-            {{ form(form) }}
+            {{
+                form_start(
+                    form,
+                    {
+                        'attr':
+                        {
+                            'data-fd-select-id': form.fdId.vars.id
+                        }
+                    }
+                )
+            }}
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}
