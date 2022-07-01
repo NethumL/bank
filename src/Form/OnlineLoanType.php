@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\Positive;
 
 class OnlineLoanType extends AbstractType
 {
@@ -38,7 +40,11 @@ class OnlineLoanType extends AbstractType
                     ]
                 ])
                 ->add('amount', MoneyType::class, [
-                    'currency' => 'LKR'
+                    'currency' => 'LKR',
+                    'constraints' => [
+                        new Positive(),
+                        new GreaterThanOrEqual(1000)
+                    ]
                 ])
                 ->add('submit', SubmitType::class)
             ;
