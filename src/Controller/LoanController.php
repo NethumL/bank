@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Loan;
 use App\Entity\OnlineLoan;
+use App\Entity\User;
 use App\Form\OnlineLoanType;
 use App\Repository\FdRepository;
 use App\Repository\LoanRepository;
@@ -23,6 +23,7 @@ class LoanController extends AbstractController
         MoneyUtils $moneyUtils
     ): Response
     {
+        /* @var User $user */
         $user = $this->getUser();
         $onlineLoanObj = new OnlineLoan();
         // calculate the loan eligibility
