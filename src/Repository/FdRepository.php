@@ -34,5 +34,13 @@ class FdRepository extends ServiceEntityRepository
             $fd['amount']
         ]);
     }
+
+    public function findOne(string $id): array|bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM FD WHERE ID = ?");
+        $result = $stmt->executeQuery([$id]);
+        return $result->fetchAssociative();
+    }
 }
 
