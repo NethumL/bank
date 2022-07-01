@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Transaction;
+use App\Entity\User;
 use App\Form\TransferType;
 use App\Repository\AccountRepository;
 use App\Repository\TransactionRepository;
 use App\Util\MoneyUtils;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TransferController extends AbstractController
 {
+    private EntityManagerInterface $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     #[Route('/transfer', name: 'app_transfer', methods: ['GET', 'POST'])]
     public function index(
         Request               $request,
@@ -22,6 +32,7 @@ class TransferController extends AbstractController
         MoneyUtils            $moneyUtils
     ): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
 
         $transfer = new Transaction();
@@ -30,10 +41,9 @@ class TransferController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* @var Transaction */
+            /** @var Transaction */
             $transfer = $form->getData();
             $transfer->setType("TRANSFER");
-            $transactionRepository->insert($transfer);
 
             $fromAccount = $accountRepository->findOne($transfer->getFrom());
             $amountToTransfer = $moneyUtils->parseString($transfer->getAmount());
@@ -42,8 +52,18 @@ class TransferController extends AbstractController
             $newAmountInFrom = $moneyUtils->parseString($fromAccount['Amount'])->subtract($amountToTransfer);
             $newAmountInTo = $moneyUtils->parseString($toAccount['Amount'])->add($amountToTransfer);
 
-            $accountRepository->updateAmount($fromAccount['Account_Number'], $moneyUtils->format($newAmountInFrom));
-            $accountRepository->updateAmount($toAccount['Account_Number'], $moneyUtils->format($newAmountInTo));
+            $conn = $this->em->getConnection();
+            $conn->beginTransaction();
+
+            try {
+                $transactionRepository->insert($transfer);
+                $accountRepository->updateAmount($fromAccount['Account_Number'], $moneyUtils->format($newAmountInFrom));
+                $accountRepository->updateAmount($toAccount['Account_Number'], $moneyUtils->format($newAmountInTo));
+                $conn->commit();
+            } catch (Exception $e) {
+                $conn->rollBack();
+                throw $e;
+            }
 
             return $this->redirectToRoute("app_account_view");
         }

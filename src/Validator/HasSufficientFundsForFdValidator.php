@@ -2,13 +2,12 @@
 
 namespace App\Validator;
 
-use App\Entity\Transaction;
 use App\Repository\AccountRepository;
 use App\Util\MoneyUtils;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class HasSufficientFundsValidator extends ConstraintValidator
+class HasSufficientFundsForFdValidator extends ConstraintValidator
 {
     private AccountRepository $accountRepository;
     private MoneyUtils $moneyUtils;
@@ -20,28 +19,29 @@ class HasSufficientFundsValidator extends ConstraintValidator
     }
 
     /**
-     * @param Transaction $value
-     * @param HasSufficientFunds $constraint
+     * @param array $value
+     * @param HasSufficientFundsForFd $constraint
      * @return void
      */
     public function validate($value, Constraint $constraint): void
     {
         if (null === $value || '' === $value
-            || null === $value->getFrom() || '' === $value->getFrom()
-            || null === $value->getTo() || '' === $value->getTo()
-            || null === $value->getAmount() || '' === $value->getAmount()
+            || null === $value['savingsAccount'] || '' === $value['savingsAccount']
+            || null === $value['plan'] || '' === $value['plan']
+            || null === $value['amount'] || '' === $value['amount']
+            || null === $value['agree'] || '' === $value['agree']
         ) {
             return;
         }
 
-        $fromAccount = $this->accountRepository->findOne($value->getFrom());
-        $availableAmount = $this->moneyUtils->parseString($fromAccount['Amount']);
-        $amountToTransfer = $this->moneyUtils->parseString($value->getAmount());
+        $savingsAccount = $this->accountRepository->findOne($value['savingsAccount']);
+        $availableAmount = $this->moneyUtils->parseString($savingsAccount['Amount']);
+        $amountToTransfer = $this->moneyUtils->parseString($value['amount']);
 
         if ($availableAmount->lessThan($amountToTransfer)) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ from }}', $value->getFrom())
-                ->atPath('from')
+                ->setParameter('{{ savingsAccount }}', $value['savingsAccount'])
+                ->atPath('savingsAccount')
                 ->addViolation();
         }
     }

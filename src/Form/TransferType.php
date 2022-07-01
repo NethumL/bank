@@ -36,7 +36,10 @@ class TransferType extends AbstractType
             ->add('from', ChoiceType::class, ['choices' => $accountChoices])
             ->add('to', TextType::class, ['constraints' => [new AccountExists()]])
             ->add('type', HiddenType::class)
-            ->add('amount', MoneyType::class, ['currency' => '', 'constraints' => [new Positive()]])
+            ->add('amount', MoneyType::class, [
+                'currency' => '',
+                'constraints' => [new Positive(message: "The amount must be positive")]
+            ])
             ->add('description', TextType::class, ['required' => false])
             ->add('transfer', SubmitType::class)
         ;

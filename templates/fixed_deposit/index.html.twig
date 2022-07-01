@@ -3,44 +3,45 @@
 {% block title %}Hello FixedDepositController!{% endblock %}
 
 {% block body %}
+<div class="row justify-content-md-center">
     <h2>Start a Fixed Deposit</h2>
-    <div class="card">
+    <div class="card w-50">
         <div class="card-body">
-            <form class="form-horizontal" method="post">
-                <div class="row">
-                    <div class="form-group mb-4">
-                        <label for="loan_plan">Type</label>
-                        <select class="form-select" id="loan_plan" name="loan_plan" required>
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
+            {{ form_start(form, {'attr': {'class': 'needs-validation', 'data-savings-id': form.savingsAccount.vars.id, 'data-amount-id': form.amount.vars.id}}) }}
+                <div class="row mb-3">
+                    {{ form_errors(form) }}
+                    {{ form_label(form.savingsAccount, 'Savings Account', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_errors(form.savingsAccount) }}
+                        {{ form_widget(form.savingsAccount) }}
                     </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="agree">
-                    <label class="form-check-label" for="agree">
-                        Agree to Terms and Conditions
-                    </label>
+                <div class="row mb-3">
+                    {{ form_label(form.plan, 'Plan', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_errors(form.plan) }}
+                        {{ form_widget(form.plan) }}
+                    </div>
                 </div>
+                <div class="row mb-3">
+                    {{ form_label(form.amount, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_errors(form.amount) }}
+                        {{ form_widget(form.amount) }}
+                    </div>
+                </div>
+                {{ form_errors(form.agree) }}
+                {{ form_widget(form.agree) }}
                 <div class="mt-4">
-                    <button
-                            class="btn btn-success btn-block waves-effect waves-light"
-                            type="submit"
-                            name="btn_submit"
-                    >
-                        Submit
-                    </button>
-                    <button
-                            class="btn btn-danger btn-block waves-effect waves-light"
-                            type="submit"
-                            name="btn_submit"
-                    >
-                        Cancel
-                    </button>
+                    {{ form_widget(form.submit, {'attr': {'class': 'btn-success btn-block waves-effect waves-light'}}) }}
                 </div>
-            </form>
+            {{ form_end(form) }}
         </div>
     </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('fixed_deposit') }}
 {% endblock %}
