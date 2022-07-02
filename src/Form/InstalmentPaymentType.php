@@ -4,6 +4,7 @@ namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,9 +18,10 @@ class InstalmentPaymentType extends AbstractType
         $builder
             ->add('creditCardNumber', TextType::class)
             ->add('expiryMonth', IntegerType::class, ['constraints' => [new Assert\Range(['min' => 1, 'max' => 12])], 'attr' => ['min' => 1, 'max' => 12]])
-            ->add('expiryYear', IntegerType::class, ['constraints' => [new Assert\Range(['min' => (int) date("y")])], 'attr' => ['min' => (int) date("y")]])
-            ->add('cvv', TextType::class)
-            ->add('pay', SubmitType::class);
+            ->add('expiryYear', IntegerType::class, ['constraints' => [new Assert\Range(['min' => (int)date("y")])], 'attr' => ['min' => (int)date("y")]])
+            ->add('cvv', NumberType::class, ['input' => 'string'])
+            ->add('pay', SubmitType::class)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
