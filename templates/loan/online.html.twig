@@ -3,49 +3,54 @@
 {% block title %}Hello LoanController!{% endblock %}
 
 {% block body %}
-    <h2>Online Loan Request</h2>
-    <div class="card">
-        <div class="card-body">
-            <form class="form-horizontal" method="post">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group mb-4">
-                            <label for="amount">Amount Rs:</label>
+    <div class="row justify-content-md-center">
+        <h2 class="page-heading" >Online Loan Request</h2>
+        <div class="card w-50">
+            <div class="card-body">
+                <form class="needs-validation" method="post">
+                    <div class="row mb-3">
+                        <label for="amount" class="col-sm-2 col-form-label">Amount Rs:</label>
+                        <div class="col-sm-10">
                             <input
                                     type="number"
                                     class="form-control"
                                     id="amount"
                                     name='amount'
-                                    {#                            placeholder="Your Username" #}
                                     value=""
                                     required
                             />
                         </div>
-                        <div class="form-group mb-4">
-                            <label for="description">Description</label>
-                            <textarea
-                                    type="password"
-                                    class="form-control"
-                                    id="description"
-                                    name="description"
-                                    required
-                            ></textarea>
-                        </div>
-
-
-                        <div class="mt-4">
-                            <button
-                                    class="btn btn-success btn-block waves-effect waves-light"
-                                    type="submit"
-                                    name="btn_submit"
-                            >
-                                Submit
-                            </button>
-                        </div>
-
                     </div>
-                </div>
-            </form>
+                    <div class="row mb-3">
+                        <label for="description" class="col-sm-2 col-form-label">Description</label>
+                        <div class="col-sm-10">
+                        <textarea
+                                type="password"
+                                class="form-control"
+                                id="description"
+                                name="description"
+                                required
+                        ></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button
+                                class="btn btn-success btn-block waves-effect waves-light "
+                                type="submit"
+                                name="btn_submit"
+                        >
+                            Submit
+                        </button>
+                        <button
+                                class="btn btn-danger btn-block waves-effect waves-light"
+                                type="submit"
+                                name="btn_submit"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello InstalmentController!{% endblock %}
+{% block title %}Transfer Funds{% endblock %}
 
 {% block body %}
-    <h2>Instalment View</h2>
+    <h2>Transfer History</h2>
     <div class="card">
         <div class="card-body">
             <div class="row align-items-start">
@@ -11,22 +11,18 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Instalment ID</th>
-                            <th>Loan ID</th>
-                            <th>Year</th>
-                            <th>Month</th>
+                            <th>From</th>
+                            <th>To</th>
                             <th>Amount</th>
-                            <th>Status</th>
+                            <th>Time</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr onclick="window.location='#';">
                             <td>1111</td>
                             <td>2222</td>
-                            <td>2022</td>
-                            <td>January</td>
-                            <td>100000</td>
-                            <td>pending</td>
+                            <td>Rs 2000</td>
+                            <td>2022/01/14</td>
                         </tr>
                         </tbody>
                     </table>
