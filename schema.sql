@@ -104,3 +104,37 @@ CREATE TABLE `FD`
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`)
 );
+
+DELIMITER $$
+CREATE EVENT fd_interest
+    ON SCHEDULE EVERY 1 DAY
+    ON COMPLETION PRESERVE
+    DO
+    BEGIN
+        DECLARE length INT DEFAULT 0;
+        DECLARE counter INT DEFAULT 0;
+        DECLARE month_length INT DEFAULT 30;
+        SELECT COUNT(*) FROM FD INTO length;
+        SET counter = 0;
+        SET month_length = 30;
+        WHILE counter < length
+            DO
+                SELECT F.ID, F.Account_Number, F.Amount, FP.Duration, FP.Interest_Rate, F.Created_Time
+                INTO @id, @s, @a, @d, @r, @t
+                FROM FD F
+                         JOIN FD_Plan FP on F.Plan_ID = FP.ID
+                LIMIT counter, 1;
+
+                SELECT TIMESTAMPDIFF(DAY, @t, current_timestamp()) INTO @time_diff;
+
+                IF @time_diff MOD month_length = 0 AND @time_diff <= @d * month_length THEN
+                    UPDATE Account SET Amount = Amount + @a * @r / 100 WHERE Account_Number = @s;
+                    IF @time_diff = @d * month_length THEN
+                        UPDATE Account SET Amount = Amount + @a WHERE Account_Number = @s;
+                        DELETE FROM FD WHERE ID = @id;
+                    END IF;
+                END IF;
+                SET counter = counter + 1;
+            END WHILE;
+    END $$
+DELIMITER ;
