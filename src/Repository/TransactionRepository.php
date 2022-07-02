@@ -36,4 +36,14 @@ class TransactionRepository extends ServiceEntityRepository
             $transaction->getDescription(),
         ]);
     }
+
+    public function findByUser(string $userId): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare( "
+            SELECT * FROM Transaction T LEFT JOIN Account A on T.`From` = A.Account_Number
+            WHERE A.User_ID = ?
+        ");
+        return $stmt->executeQuery([$userId])->fetchAllAssociative();
+    }
 }
