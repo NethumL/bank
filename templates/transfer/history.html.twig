@@ -18,12 +18,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr onclick="window.location='#';">
-                            <td>1111</td>
-                            <td>2222</td>
-                            <td>Rs 2000</td>
-                            <td>2022/01/14</td>
-                        </tr>
+                        {% for transfer in transfers %}
+                            <tr>
+                                <td>{{ transfer['From'] }}</td>
+                                <td>{{ transfer['To'] }}</td>
+                                <td>Rs. {{ transfer['Amount'] }}</td>
+                                <td>{{ transfer['Created_Time'] }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
 
