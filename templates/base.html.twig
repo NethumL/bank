@@ -216,6 +216,14 @@
                             </li>
                         {% endif %}
 
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_branch_new') }}">
+                                    <i class="mdi mdi mdi mdi mdi-bank-plus mr-2"></i>Add branch
+                                </a>
+                            </li>
+                        {% endif %}
+
                         {% if is_granted('ROLE_MANAGER') %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_admin_new') }}">
