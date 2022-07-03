@@ -18,6 +18,15 @@ CREATE TABLE `User`
     PRIMARY KEY (`ID`)
 );
 
+CREATE TABLE `Employee`
+(
+    `ID`        varchar(36) NOT NULL,
+    `Branch_ID` varchar(36) NOT NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`ID`) REFERENCES `User` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`Branch_ID`) REFERENCES `Branch` (`ID`) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
 CREATE TABLE `Savings_Plan`
 (
     `ID`              int            NOT NULL AUTO_INCREMENT,
