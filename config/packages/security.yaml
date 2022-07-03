@@ -38,7 +38,7 @@ security:
         - { path: '^/instalment', roles: ROLE_CUSTOMER }
         - { path: '^/transfer', roles: ROLE_CUSTOMER }
         - { path: '^/fixed-deposit', roles: ROLE_CUSTOMER }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: '^/admin', roles: ROLE_MANAGER }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
