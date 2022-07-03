@@ -2,7 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Employee;
+use App\Repository\BranchRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -15,13 +16,26 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 
-class NewUserType extends AbstractType
+class NewEmployeeType extends AbstractType
 {
+    private BranchRepository $branchRepository;
+
+    public function __construct(BranchRepository $branchRepository)
+    {
+        $this->branchRepository = $branchRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $userTypes = [];
         foreach ($options['userTypeChoices'] as $userType) {
             $userTypes[$userType] = $userType;
+        }
+
+        $branches = $this->branchRepository->findAll();
+        $branchChoices = [];
+        foreach ($branches as $branch) {
+            $branchChoices[$branch['Name']] = $branch['ID'];
         }
 
         $builder
@@ -34,6 +48,7 @@ class NewUserType extends AbstractType
             ->add('phoneNumber', TelType::class)
             ->add('dob', BirthdayType::class, ['widget' => 'single_text'])
             ->add('address', TextareaType::class)
+            ->add('branchId', ChoiceType::class, ['choices' => $branchChoices])
             ->add('add', SubmitType::class)
         ;
     }
@@ -41,7 +56,7 @@ class NewUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Employee::class,
             'userTypeChoices' => ['EMPLOYEE'],
         ]);
 

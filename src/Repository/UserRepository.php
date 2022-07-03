@@ -16,15 +16,16 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         parent::__construct($registry, User::class);
     }
 
-    public function insert(User $user): int
+    public function insert(User $user): Uuid
     {
         $conn = $this->getEntityManager()->getConnection();
         $stmt = $conn->prepare("
             INSERT INTO User(ID, Username, Name, Password, User_Type, Phone_Number, DOB, Address)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?);
         ");
-        return $stmt->executeStatement([
-            Uuid::v4(),
+        $uuid = Uuid::v4();
+        $stmt->executeStatement([
+            $uuid,
             $user->getUsername(),
             $user->getName(),
             $user->getPassword(),
@@ -33,6 +34,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             $user->getDob()->format('Y-m-d'),
             $user->getAddress()
         ]);
+        return $uuid;
     }
 
     public function findOneByUsername(string $username): array|bool
