@@ -1,8 +1,11 @@
 CREATE TABLE `Branch`
 (
-    `ID`      varchar(36)  NOT NULL,
-    `Address` varchar(100) NOT NULL,
-    PRIMARY KEY (`ID`)
+    `ID`         varchar(36)  NOT NULL,
+    `Name`       varchar(50)  NOT NULL,
+    `Address`    varchar(100) NOT NULL,
+    `Manager_ID` varchar(36)  NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`Manager_ID`) REFERENCES `Employee` (`ID`)
 );
 
 CREATE TABLE `User`
