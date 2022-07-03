@@ -7,12 +7,32 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
 class UserRepository extends ServiceEntityRepository implements UserLoaderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    public function insert(User $user): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("
+            INSERT INTO User(ID, Username, Name, Password, User_Type, Phone_Number, DOB, Address)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?);
+        ");
+        return $stmt->executeStatement([
+            Uuid::v4(),
+            $user->getUsername(),
+            $user->getName(),
+            $user->getPassword(),
+            $user->getUserType(),
+            $user->getPhoneNumber(),
+            $user->getDob()->format('Y-m-d'),
+            $user->getAddress()
+        ]);
     }
 
     public function findOneByUsername(string $username): array|bool
