@@ -7,14 +7,14 @@ CREATE TABLE `Branch`
 
 CREATE TABLE `User`
 (
-    `ID`           varchar(36)                              NOT NULL,
-    `Username`     varchar(30) UNIQUE                       NOT NULL,
-    `Password`     varchar(256)                             NOT NULL,
-    `Name`         varchar(50)                              NOT NULL,
-    `User_Type`    enum ('MANAGER', 'EMPLOYEE', 'CUSTOMER') NOT NULL,
-    `Phone_Number` varchar(10)                              NOT NULL,
-    `DOB`          date                                     NOT NULL,
-    `Address`      varchar(100)                             NOT NULL,
+    `ID`           varchar(36)                                       NOT NULL,
+    `Username`     varchar(30) UNIQUE                                NOT NULL,
+    `Password`     varchar(256)                                      NOT NULL,
+    `Name`         varchar(50)                                       NOT NULL,
+    `User_Type`    enum ('ADMIN', 'MANAGER', 'EMPLOYEE', 'CUSTOMER') NOT NULL,
+    `Phone_Number` varchar(10)                                       NOT NULL,
+    `DOB`          date                                              NOT NULL,
+    `Address`      varchar(100)                                      NOT NULL,
     PRIMARY KEY (`ID`)
 );
 
