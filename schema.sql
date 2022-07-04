@@ -1,13 +1,3 @@
-CREATE TABLE `Branch`
-(
-    `ID`         varchar(36)  NOT NULL,
-    `Name`       varchar(50)  NOT NULL,
-    `Address`    varchar(100) NOT NULL,
-    `Manager_ID` varchar(36)  NULL,
-    PRIMARY KEY (`ID`),
-    FOREIGN KEY (`Manager_ID`) REFERENCES `Employee` (`ID`)
-);
-
 CREATE TABLE `User`
 (
     `ID`           varchar(36)                                       NOT NULL,
@@ -28,6 +18,16 @@ CREATE TABLE `Employee`
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`ID`) REFERENCES `User` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`Branch_ID`) REFERENCES `Branch` (`ID`) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE `Branch`
+(
+    `ID`         varchar(36)  NOT NULL,
+    `Name`       varchar(50)  NOT NULL,
+    `Address`    varchar(100) NOT NULL,
+    `Manager_ID` varchar(36)  NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`Manager_ID`) REFERENCES `Employee` (`ID`)
 );
 
 CREATE TABLE `Savings_Plan`
