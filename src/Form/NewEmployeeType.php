@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Employee;
-use App\Repository\BranchRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,23 +17,15 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class NewEmployeeType extends AbstractType
 {
-    private BranchRepository $branchRepository;
-
-    public function __construct(BranchRepository $branchRepository)
-    {
-        $this->branchRepository = $branchRepository;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $userTypes = [];
-        foreach ($options['userTypeChoices'] as $userType) {
-            $userTypes[$userType] = $userType;
+        $userTypeChoices = [];
+        foreach ($options['userTypes'] as $userType) {
+            $userTypeChoices[$userType] = $userType;
         }
 
-        $branches = $this->branchRepository->findAll();
         $branchChoices = [];
-        foreach ($branches as $branch) {
+        foreach ($options['branches'] as $branch) {
             $branchChoices[$branch['Name']] = $branch['ID'];
         }
 
@@ -44,7 +35,7 @@ class NewEmployeeType extends AbstractType
             ->add('password', PasswordType::class, [
                 'constraints' => [new Length(min: 8, minMessage: 'Password must be at least {{ limit }} characters')]
             ])
-            ->add('userType', ChoiceType::class, ['choices' => $userTypes])
+            ->add('userType', ChoiceType::class, ['choices' => $userTypeChoices])
             ->add('phoneNumber', TelType::class)
             ->add('dob', BirthdayType::class, ['widget' => 'single_text'])
             ->add('address', TextareaType::class)
@@ -57,9 +48,11 @@ class NewEmployeeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Employee::class,
-            'userTypeChoices' => ['EMPLOYEE'],
+            'userTypes' => ['EMPLOYEE'],
+            'branches' => []
         ]);
 
-        $resolver->setAllowedTypes('userTypeChoices', 'array');
+        $resolver->setAllowedTypes('userTypes', 'array');
+        $resolver->setAllowedTypes('branches', 'array');
     }
 }

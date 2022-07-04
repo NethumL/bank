@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Employee;
+use App\Entity\User;
 use App\Form\NewEmployeeType;
 use App\Repository\BranchRepository;
 use App\Repository\EmployeeRepository;
@@ -33,14 +34,23 @@ class AdminController extends AbstractController
         BranchRepository            $branchRepository,
     ): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         if ($this->isGranted('ROLE_ADMIN')) {
-            $userTypeChoices = ['MANAGER', 'EMPLOYEE'];
+            $userTypes = ['MANAGER', 'EMPLOYEE'];
+            $branches = $branchRepository->findAll();
         } else {
-            $userTypeChoices = ['EMPLOYEE'];
+            $userTypes = ['EMPLOYEE'];
+            $loggedInEmployee = $employeeRepository->findOneById($user->getId());
+            $branches = [$branchRepository->findOneById($loggedInEmployee['Branch_ID'])];
         }
 
         $newEmployee = new Employee();
-        $form = $this->createForm(NewEmployeeType::class, $newEmployee, ['userTypeChoices' => $userTypeChoices]);
+        $form = $this->createForm(NewEmployeeType::class, $newEmployee, [
+            'userTypes' => $userTypes,
+            'branches' => $branches,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
