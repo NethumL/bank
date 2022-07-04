@@ -3,26 +3,24 @@
 namespace App\Repository;
 
 use App\Entity\Employee;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
-/**
- * @extends ServiceEntityRepository<Employee>
- *
- * @method Employee|null find($id, $lockMode = null, $lockVersion = null)
- * @method Employee|null findOneBy(array $criteria, array $orderBy = null)
- * @method Employee[]    findAll()
- * @method Employee[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class EmployeeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Employee::class);
+    }
+
+    public function findOneById(string $id): array|bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT * FROM Employee E JOIN User U ON E.ID = U.ID WHERE E.ID = ?';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery([$id]);
+        return $resultSet->fetchAssociative();
     }
 
     public function insert(Employee $employee, Uuid $id): int
