@@ -75,7 +75,7 @@ class LoanController extends AbstractController
             $onlineLoanObj = $form->getData();
             $onlineLoanObj->setId(Uuid::v4());
             $onlineLoanObj->setUser($user);
-            $onlineLoanObj->setStatus('PAID');
+            $onlineLoanObj->setStatus('APPROVED');
             $onlineLoanObj->setLoanMode('ONLINE');
 
             $loanRepository->insertOnlineLoan($onlineLoanObj);
