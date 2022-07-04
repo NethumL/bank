@@ -18,7 +18,7 @@ class FdRepository extends ServiceEntityRepository
     public function findByUser(string $userId): array|bool
     {
         $conn = $this->getEntityManager()->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM Account A LEFT JOIN FD USING(Account_Number) WHERE A.User_ID = ?");
+        $stmt = $conn->prepare("SELECT FD.* FROM Account A INNER JOIN FD USING(Account_Number) WHERE A.User_ID = ?");
         $resultSet = $stmt->executeQuery([$userId]);
         return $resultSet->fetchAllAssociative();
     }
