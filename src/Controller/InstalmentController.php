@@ -71,13 +71,12 @@ class InstalmentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $account = $accountRepository->findOne($transaction->getFrom());
-            $newAmountInAccount = $moneyUtils->parseString($account['Amount'])->subtract($amountToPay);
-
             $conn = $this->em->getConnection();
             $conn->beginTransaction();
 
             try {
+                $account = $accountRepository->findOne($transaction->getFrom());
+                $newAmountInAccount = $moneyUtils->parseString($account['Amount'])->subtract($amountToPay);
                 $accountRepository->updateAmount($account['Account_Number'], $moneyUtils->format($newAmountInAccount));
                 $instalmentRepository->markAsPaid($id);
                 $transactionRepository->insert($transaction);
