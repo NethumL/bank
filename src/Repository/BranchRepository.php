@@ -30,6 +30,15 @@ class BranchRepository extends ServiceEntityRepository
         ]);
     }
 
+    public function findOneById(string $id): array|bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT * FROM Branch WHERE Branch.ID = ?";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery([$id]);
+        return $resultSet->fetchAssociative();
+    }
+
     public function findAll(): array
     {
         $conn = $this->getEntityManager()->getConnection();
