@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Uuid;
 
 class LoanController extends AbstractController
 {
@@ -70,10 +71,14 @@ class LoanController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $onlineLoan = $form->getData();
+            /* @var OnlineLoan $onlineLoanObj */
+            $onlineLoanObj = $form->getData();
+            $onlineLoanObj->setId(Uuid::v4());
+            $onlineLoanObj->setUser($user);
+            $onlineLoanObj->setStatus('PAID');
+            $onlineLoanObj->setLoanMode('ONLINE');
 
-            // Save data
-
+            $loanRepository->insertOnlineLoan($onlineLoanObj);
             return $this->redirectToRoute('app_loan_online');
         }
 
