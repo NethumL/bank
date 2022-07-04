@@ -1,13 +1,3 @@
-CREATE TABLE `Branch`
-(
-    `ID`         varchar(36)  NOT NULL,
-    `Name`       varchar(50)  NOT NULL,
-    `Address`    varchar(100) NOT NULL,
-    `Manager_ID` varchar(36)  NULL,
-    PRIMARY KEY (`ID`),
-    FOREIGN KEY (`Manager_ID`) REFERENCES `Employee` (`ID`)
-);
-
 CREATE TABLE `User`
 (
     `ID`           varchar(36)                                       NOT NULL,
@@ -26,9 +16,20 @@ CREATE TABLE `Employee`
     `ID`        varchar(36) NOT NULL,
     `Branch_ID` varchar(36) NOT NULL,
     PRIMARY KEY (`ID`),
-    FOREIGN KEY (`ID`) REFERENCES `User` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`Branch_ID`) REFERENCES `Branch` (`ID`) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY (`ID`) REFERENCES `User` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE `Branch`
+(
+    `ID`         varchar(36)  NOT NULL,
+    `Name`       varchar(50)  NOT NULL,
+    `Address`    varchar(100) NOT NULL,
+    `Manager_ID` varchar(36)  NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`Manager_ID`) REFERENCES `Employee` (`ID`)
+);
+
+ALTER TABLE `Employee` ADD FOREIGN KEY (`Branch_ID`) REFERENCES `Branch`(`ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 CREATE TABLE `Savings_Plan`
 (
@@ -84,6 +85,17 @@ CREATE TABLE `FD_Plan`
     PRIMARY KEY (`ID`)
 );
 
+CREATE TABLE `FD`
+(
+    `ID`             varchar(36)    NOT NULL,
+    `Account_Number` varchar(20)    NOT NULL,
+    `Plan_ID`        int            NOT NULL,
+    `Amount`         decimal(15, 2) NOT NULL,
+    `Created_Time`   timestamp      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`)
+);
+
 CREATE TABLE `Loan`
 (
     `ID`           varchar(36)                          NOT NULL,
@@ -91,8 +103,28 @@ CREATE TABLE `Loan`
     `Loan_Type`    enum ('PERSONAL', 'BUSINESS')        NOT NULL,
     `Status`       enum ('CREATED', 'APPROVED', 'PAID') NOT NULL,
     `Created_Time` timestamp                            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `Amount`    decimal(15,2)                        NOT NULL,
+    `Loan_Mode` enum ('NORMAL', 'ONLINE')        NOT NULL,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`)
+);
+
+CREATE TABLE `Normal_Loan`
+(
+    `ID`        varchar(36)                          NOT NULL,
+    `Account_Number` varchar(20)                     NOT NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`ID`) REFERENCES `Loan` (`ID`),
+    FOREIGN KEY (`Account_Number`) REFERENCES `Account` (`Account_Number`)
+);
+
+CREATE TABLE `Online_Loan`
+(
+    `ID`        varchar(36)                 NOT NULL,
+    `FD_ID`     varchar(36)                 NOT NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`ID`) REFERENCES `Loan` (`ID`),
+    FOREIGN KEY (`FD_ID`) REFERENCES `FD` (`ID`)
 );
 
 CREATE TABLE `Installment`
@@ -105,17 +137,6 @@ CREATE TABLE `Installment`
     `Status`  enum ('CREATED', 'PAID') NOT NULL,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`Loan_ID`) REFERENCES `Loan` (`ID`)
-);
-
-CREATE TABLE `FD`
-(
-    `ID`             varchar(36)    NOT NULL,
-    `Account_Number` varchar(20)    NOT NULL,
-    `Plan_ID`        int            NOT NULL,
-    `Amount`         decimal(15, 2) NOT NULL,
-    `Created_Time`   timestamp      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`ID`),
-    FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`)
 );
 
 DELIMITER $$

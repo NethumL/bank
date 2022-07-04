@@ -38,6 +38,8 @@ security:
         - { path: '^/instalment', roles: ROLE_CUSTOMER }
         - { path: '^/transfer', roles: ROLE_CUSTOMER }
         - { path: '^/fixed-deposit', roles: ROLE_CUSTOMER }
+        - { path: '^/loan', roles: ROLE_CUSTOMER }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: '^/admin', roles: ROLE_MANAGER }
         - { path: '^/branch', roles: ROLE_ADMIN }
         - { path: '^/auth/change-password', roles: IS_AUTHENTICATED_FULLY }

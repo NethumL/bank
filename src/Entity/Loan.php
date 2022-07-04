@@ -45,6 +45,10 @@ class Loan
      */
     private $user;
 
+    private $amount;
+
+    private $loanMode;
+
     /**
      * @var \DateTime
      *
@@ -55,6 +59,13 @@ class Loan
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getCreatedTime(): ?\DateTimeInterface
@@ -105,5 +116,27 @@ class Loan
         return $this;
     }
 
+    public function getAmount(): ?string
+    {
+        return $this->amount;
+    }
 
+    public function setAmount(string $amount): self
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getLoanMode(): ?string
+    {
+        return $this->loanMode;
+    }
+
+    public function setLoanMode(string $mode): self
+    {
+        $this->loanMode = $mode;
+
+        return $this;
+    }
 }
