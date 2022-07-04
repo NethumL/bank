@@ -85,6 +85,7 @@ class LoanController extends AbstractController
         return $this->renderForm('loan/online.html.twig', [
             'form' => $form,
             'controller_name' => 'LoanController',
+            'loanEligibility' => $loanEligibility
         ]);
     }
 
