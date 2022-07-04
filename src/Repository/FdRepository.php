@@ -42,5 +42,16 @@ class FdRepository extends ServiceEntityRepository
         $result = $stmt->executeQuery([$id]);
         return $result->fetchAssociative();
     }
+
+    public function isExpired(string $fdId): bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("SELECT DATE_ADD(FD.Created_Time, INTERVAL FD_Plan.Duration MONTH) AS expire_time FROM FD INNER JOIN FD_Plan ON FD.Plan_ID=FD_Plan.ID WHERE FD.ID=?");
+        $expireTime = $stmt->executeQuery([$fdId])->fetchOne();
+        if ($expireTime) {
+            return strtotime($expireTime) < strtotime(date('Y-m-d H:i:s'));
+        }
+        throw new \Exception('Invalid FD ID');
+    }
 }
 
