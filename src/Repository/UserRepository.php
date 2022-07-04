@@ -68,4 +68,11 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             $user->getId(),
         ]);
     }
+
+    public function updatePassword(string $id, string $newPassword): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("UPDATE User SET Password = ? WHERE ID = ?;");
+        return $stmt->executeStatement([$newPassword, $id]);
+    }
 }
