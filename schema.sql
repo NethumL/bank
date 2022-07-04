@@ -65,15 +65,16 @@ CREATE TABLE `Savings`
 
 CREATE TABLE `Transaction`
 (
-    `Transaction_ID` varchar(36)                     NOT NULL,
-    `From`           varchar(20)                     NOT NULL,
-    `To`             varchar(20)                     NOT NULL,
-    `Type`           enum ('WITHDRAWAL', 'TRANSFER') NOT NULL,
-    `Amount`         decimal(15, 2)                  NOT NULL,
-    `Created_Time`   timestamp                       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `Description`    text                            NULL     DEFAULT NULL,
+    `Transaction_ID` varchar(36)                                           NOT NULL,
+    `From`           varchar(20)                                           NULL DEFAULT NULL,
+    `To`             varchar(20)                                           NULL DEFAULT NULL,
+    `Type`           enum ('WITHDRAWAL', 'TRANSFER', 'DEPOSIT', 'PAYMENT') NOT NULL,
+    `Amount`         decimal(15, 2)                                        NOT NULL,
+    `Created_Time`   timestamp                                             NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `Description`    text                                                  NULL     DEFAULT NULL,
     PRIMARY KEY (`Transaction_ID`),
-    FOREIGN KEY (`From`) REFERENCES `Account` (`Account_Number`)
+    FOREIGN KEY (`From`) REFERENCES `Account` (`Account_Number`),
+    FOREIGN KEY (`To`) REFERENCES `Account` (`Account_Number`)
 );
 
 CREATE TABLE `FD_Plan`

@@ -1,33 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BranchController!{% endblock %}
+{% block title %}New Branch{% endblock %}
 
 {% block body %}
     <div class="row justify-content-md-center">
-        <h2>Add new branch</h2>
-        <div class="card w-50">
-            <div class="card-body">
-                {{ form_start(form) }}
-                <div class="row mb-3">
-                    {{ form_errors(form) }}
-                    {{ form_label(form.name, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
-                    <div class="col-sm-9">
-                        {{ form_errors(form.name) }}
-                        {{ form_widget(form.name) }}
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    {{ form_label(form.address, null,{'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
-                    <div class="col-sm-9">
-                        {{ form_errors(form.address) }}
-                        {{ form_widget(form.address) }}
-                    </div>
-                </div>
-                <div class="mt-3">
-                    {{ form_widget(form.add, {'attr': {'class': 'btn-success'}}) }}
-                </div>
-                {{ form_end(form) }}
-            </div>
-        </div>
+        <h2>Create new branch</h2>
+
+        {{ include('branch/_form.html.twig') }}
     </div>
+    <a class="btn btn-primary" href="{{ path('app_branch_index') }}">back to list</a>
 {% endblock %}

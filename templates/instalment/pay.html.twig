@@ -1,38 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello InstalmentController!{% endblock %}
+{% block title %}Pay loan instalment{% endblock %}
 
 {% block body %}
     <div class="row justify-content-md-center">
-        <h2>Pay Loan Installment</h2>
+        <h2>Pay Loan Instalment</h2>
         <div class="card w-50">
             <div class="card-body">
                 {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
                     <div class="row mb-3">
-                        <h4>Payment Details</h4>
-                        {{ form_label(form.creditCardNumber, 'Credit Card Number', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                        {{ form_label(form.from, 'Account', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                         <div class="col-sm-9">
-                            {{ form_errors(form.creditCardNumber) }}
-                            {{ form_widget(form.creditCardNumber) }}
+                            {{ form_errors(form.from) }}
+                            {{ form_widget(form.from) }}
                         </div>
                     </div>
                     <div class="row mb-3">
-                        {{ form_label(form.expiryMonth, 'Expiry Month (MM)', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
-                        <div class="col-sm-3">
-                            {{ form_errors(form.expiryMonth) }}
-                            {{ form_widget(form.expiryMonth) }}
-                        </div>
-                        {{ form_label(form.expiryYear, 'Expiry Year (YY)', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
-                        <div class="col-sm-3">
-                            {{ form_errors(form.expiryYear) }}
-                            {{ form_widget(form.expiryYear) }}
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        {{ form_label(form.cvv, 'CVV', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
-                        <div class="col-sm-3">
-                            {{ form_errors(form.cvv) }}
-                            {{ form_widget(form.cvv) }}
+                        {{ form_label(form.amount, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                        <div class="col-sm-9">
+                            {{ form_errors(form.amount) }}
+                            {{ form_widget(form.amount) }}
                         </div>
                     </div>
                     <div class="mt-4">

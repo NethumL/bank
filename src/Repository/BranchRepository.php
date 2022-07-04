@@ -19,22 +19,25 @@ class BranchRepository extends ServiceEntityRepository
         parent::__construct($registry, Branch::class);
     }
 
-    public function insert(Branch $branch): int
+    public function insert(array $branch): int
     {
         $conn = $this->getEntityManager()->getConnection();
         $stmt = $conn->prepare("INSERT INTO Branch(ID, Name, Address) VALUES(?, ?, ?);");
         return $stmt->executeStatement([
             Uuid::v4(),
-            $branch->getName(),
-            $branch->getAddress(),
+            $branch['Name'],
+            $branch['Address'],
         ]);
     }
 
     public function findOneById(string $id): array|bool
     {
         $conn = $this->getEntityManager()->getConnection();
-        $sql = "SELECT * FROM Branch WHERE Branch.ID = ?";
-        $stmt = $conn->prepare($sql);
+        $stmt = $conn->prepare("
+            SELECT B.ID, B.Name, B.Address, B.Manager_ID, U.Name AS Manager_Name FROM Branch B
+            LEFT JOIN User U ON B.Manager_ID = U.ID
+            WHERE B.ID = ?
+        ");
         $resultSet = $stmt->executeQuery([$id]);
         return $resultSet->fetchAssociative();
     }
@@ -42,7 +45,10 @@ class BranchRepository extends ServiceEntityRepository
     public function findAll(): array
     {
         $conn = $this->getEntityManager()->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM Branch");
+        $stmt = $conn->prepare("
+            SELECT B.ID, B.Name, B.Address, B.Manager_ID, U.Name AS Manager_Name FROM Branch B
+            LEFT JOIN User U ON B.Manager_ID = U.ID
+        ");
         $resultSet = $stmt->executeQuery();
         return $resultSet->fetchAllAssociative();
     }
@@ -52,5 +58,19 @@ class BranchRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $stmt = $conn->prepare("UPDATE Branch SET Manager_ID = ? WHERE ID = ?;");
         return $stmt->executeStatement([$managerId, $branchId]);
+    }
+
+    public function update(array $branch): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("UPDATE Branch SET Name = ?, Address = ? WHERE ID = ?;");
+        return $stmt->executeStatement([$branch['Name'], $branch['Address'], $branch['ID']]);
+    }
+
+    public function delete(string $id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("DELETE FROM Branch WHERE ID = ?;");
+        return $stmt->executeStatement([$id]);
     }
 }

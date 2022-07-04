@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="Transaction", indexes={@ORM\Index(name="From", columns={"From"})})
  * @ORM\Entity
- * @HasSufficientFunds
  */
 class Transaction
 {
@@ -26,7 +25,7 @@ class Transaction
     /**
      * @var string
      *
-     * @ORM\Column(name="To", type="string", length=20, nullable=false)
+     * @ORM\Column(name="To", type="string", length=20, nullable=true)
      */
     private $to;
 
@@ -47,7 +46,7 @@ class Transaction
     /**
      * @var string
      *
-     * @ORM\Column(name="From", type="string", length=20, nullable=false)
+     * @ORM\Column(name="From", type="string", length=20, nullable=true)
      */
     private $from;
 
