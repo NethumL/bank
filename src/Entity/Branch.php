@@ -28,6 +28,16 @@ class Branch
      */
     private $address;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=36, nullable=true)
+     */
+    private $managerId;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -45,5 +55,27 @@ class Branch
         return $this;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getManagerId(): ?string
+    {
+        return $this->managerId;
+    }
+
+    public function setManagerId(?string $managerId): self
+    {
+        $this->managerId = $managerId;
+
+        return $this;
+    }
 }

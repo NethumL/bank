@@ -73,4 +73,17 @@ class TransferController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/transfer/history', name: 'app_transfer_history', methods: ['GET'])]
+    public function history(TransactionRepository $transactionRepository): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $transfers = $transactionRepository->findByUser($user->getId());
+        return $this->render('transfer/history.html.twig', [
+            'controller_name' => 'TransferController',
+            'transfers' => $transfers
+        ]);
+    }
 }

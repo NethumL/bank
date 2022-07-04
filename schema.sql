@@ -1,21 +1,33 @@
 CREATE TABLE `Branch`
 (
-    `ID`      varchar(36)  NOT NULL,
-    `Address` varchar(100) NOT NULL,
-    PRIMARY KEY (`ID`)
+    `ID`         varchar(36)  NOT NULL,
+    `Name`       varchar(50)  NOT NULL,
+    `Address`    varchar(100) NOT NULL,
+    `Manager_ID` varchar(36)  NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`Manager_ID`) REFERENCES `Employee` (`ID`)
 );
 
 CREATE TABLE `User`
 (
-    `ID`           varchar(36)                              NOT NULL,
-    `Username`     varchar(30) UNIQUE                       NOT NULL,
-    `Password`     varchar(256)                             NOT NULL,
-    `Name`         varchar(50)                              NOT NULL,
-    `User_Type`    enum ('MANAGER', 'EMPLOYEE', 'CUSTOMER') NOT NULL,
-    `Phone_Number` varchar(10)                              NOT NULL,
-    `DOB`          date                                     NOT NULL,
-    `Address`      varchar(100)                             NOT NULL,
+    `ID`           varchar(36)                                       NOT NULL,
+    `Username`     varchar(30) UNIQUE                                NOT NULL,
+    `Password`     varchar(256)                                      NOT NULL,
+    `Name`         varchar(50)                                       NOT NULL,
+    `User_Type`    enum ('ADMIN', 'MANAGER', 'EMPLOYEE', 'CUSTOMER') NOT NULL,
+    `Phone_Number` varchar(10)                                       NOT NULL,
+    `DOB`          date                                              NOT NULL,
+    `Address`      varchar(100)                                      NOT NULL,
     PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `Employee`
+(
+    `ID`        varchar(36) NOT NULL,
+    `Branch_ID` varchar(36) NOT NULL,
+    PRIMARY KEY (`ID`),
+    FOREIGN KEY (`ID`) REFERENCES `User` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`Branch_ID`) REFERENCES `Branch` (`ID`) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE `Savings_Plan`
@@ -124,3 +136,37 @@ CREATE TABLE `Installment`
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`Loan_ID`) REFERENCES `Loan` (`ID`)
 );
+
+DELIMITER $$
+CREATE EVENT fd_interest
+    ON SCHEDULE EVERY 1 DAY
+    ON COMPLETION PRESERVE
+    DO
+    BEGIN
+        DECLARE length INT DEFAULT 0;
+        DECLARE counter INT DEFAULT 0;
+        DECLARE month_length INT DEFAULT 30;
+        SELECT COUNT(*) FROM FD INTO length;
+        SET counter = 0;
+        SET month_length = 30;
+        WHILE counter < length
+            DO
+                SELECT F.ID, F.Account_Number, F.Amount, FP.Duration, FP.Interest_Rate, F.Created_Time
+                INTO @id, @s, @a, @d, @r, @t
+                FROM FD F
+                         JOIN FD_Plan FP on F.Plan_ID = FP.ID
+                LIMIT counter, 1;
+
+                SELECT TIMESTAMPDIFF(DAY, @t, current_timestamp()) INTO @time_diff;
+
+                IF @time_diff MOD month_length = 0 AND @time_diff <= @d * month_length THEN
+                    UPDATE Account SET Amount = Amount + @a * @r / 100 WHERE Account_Number = @s;
+                    IF @time_diff = @d * month_length THEN
+                        UPDATE Account SET Amount = Amount + @a WHERE Account_Number = @s;
+                        DELETE FROM FD WHERE ID = @id;
+                    END IF;
+                END IF;
+                SET counter = counter + 1;
+            END WHILE;
+    END $$
+DELIMITER ;

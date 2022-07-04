@@ -3,55 +3,57 @@
 {% block title %}Hello InstalmentController!{% endblock %}
 
 {% block body %}
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card-body">
-                        <h2 class="header-title">Create Account</h2>
-                        <form class="needs-validation" novalidate>
-                            <div class="row">
-                                <label for="name">Name</label>
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
-                                       value="" required>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
+    <div class="row justify-content-md-center">
+        <h2 class="header-title">Create Account</h2>
+        <div class="card w-50">
+            <div class="card-body">
+                <form method="post" class="needs-validation" novalidate>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="name">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Name"
+                                   value="" required>
+                            <div class="valid-feedback">
+                                Looks good!
                             </div>
-                            <div class="row">
-                                <label for="NIC">NIC</label>
-                                <input type="text" name="NIC" class="form-control" id="NIC" placeholder="NIC" value=""
-                                       required>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <label for="address">Address</label>
-                                <input type="text" name="address" class="form-control" id="address"
-                                       placeholder="Address" required>
-                                <div class="invalid-feedback">
-                                    Please provide a valid Address.
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <label for="bdate">Birth Date</label>
-                                <input type="date" name="bdate" class="form-control" id="bdate">
-                                <div class="invalid-feedback">
-                                    Please provide a valid Address.
-                                </div>
-                            </div>
-                            <br>
-                            <div class="mt-4">
-                                <button class="btn btn-primary" name="btnSubmit" type="submit">Create</button>
-                                <button class="btn btn-danger" name="btnCancel" type="submit">Cancel</button>
-
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="NIC">NIC</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="NIC" class="form-control" id="NIC" placeholder="NIC" value=""
+                                   required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="address">Address</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="address" class="form-control" id="address"
+                                   placeholder="Address" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid Address.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="bdate">Birth Date</label>
+                        <div class="col-sm-10">
+                            <input type="date" name="bdate" class="form-control" id="bdate">
+                            <div class="invalid-feedback">
+                                Please provide a valid Address.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="mt-4">
+                        <button class="btn btn-primary" name="btnSubmit" type="submit">Create</button>
+                        <button class="btn btn-danger" name="btnCancel" type="submit">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

@@ -73,6 +73,7 @@
                         </form>
                     </div>
                 </div>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
                 <div class="dropdown d-inline-block">
                     <button type="button" class="btn header-item noti-icon waves-effect dropdown-toggle" id="page-header-notifications-dropdown"
@@ -161,7 +162,6 @@
                     </div>
                 </div>
 
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <div class="dropdown d-inline-block">
                     <button type="button" class="btn header-item waves-effect dropdown-toggle" id="page-header-user-dropdown"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -177,6 +177,8 @@
                         <a class="dropdown-item" href="{{ path('app_auth_logout') }}"><i class="mdi mdi-logout font-size-16 align-middle mr-1"></i> Logout</a>
                     </div>
                 </div>
+                {% else %}
+                    <a href="{{path('app_auth_login')}}">Login</a>
                 {% endif %}
             </div>
         </div>
@@ -188,35 +190,52 @@
 
                 <div class="collapse navbar-collapse" id="topnav-menu-content">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_transfer') }}">
-                                <i class="mdi mdi-storefront mr-2"></i>Transactions
-                            </a>
-                        </li>
+                        {% if is_granted('ROLE_CUSTOMER') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_transfer') }}">
+                                    <i class="mdi mdi-storefront mr-2"></i>Transactions
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_loan_online') }}">
-                                <i class="mdi mdi-bank-transfer mr-2"></i>Loan
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_loan_online') }}">
+                                    <i class="mdi mdi-bank-transfer mr-2"></i>Loan
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_instalment_view') }}">
-                                <i class="mdi mdi mdi-email-send-outline mr-2"></i>Instalment
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_instalment_view') }}">
+                                    <i class="mdi mdi mdi-email-send-outline mr-2"></i>Instalment
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_fixed_deposit') }}">
-                                <i class="mdi mdi mdi mdi mdi-human-greeting  mr-2"></i>Fixed Deposit
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_fixed_deposit') }}">
+                                    <i class="mdi mdi mdi mdi mdi-human-greeting  mr-2"></i>Fixed Deposit
+                                </a>
+                            </li>
+                        {% endif %}
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_report_generate') }}">
-                                <i class="mdi mdi mdi mdi mdi-book-open mr-2"></i>Report
-                            </a>
-                        </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_branch_new') }}">
+                                    <i class="mdi mdi mdi mdi mdi-bank-plus mr-2"></i>Add branch
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% if is_granted('ROLE_MANAGER') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_admin_new') }}">
+                                    <i class="mdi mdi mdi mdi mdi-account-plus mr-2"></i>Add user
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_report_generate') }}">
+                                    <i class="mdi mdi mdi mdi mdi-book-open mr-2"></i>Report
+                                </a>
+                            </li>
+                        {% endif %}
 
 {#                        <li class="nav-item">#}
 {#                            <a class="nav-link" href="feedback.php">#}
