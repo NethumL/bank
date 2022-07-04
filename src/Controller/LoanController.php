@@ -34,6 +34,8 @@ class LoanController extends AbstractController
         $eligibleFdList = [];
 
         foreach ($fdList as $idx => $fd) {
+            if ($fdRepository->isExpired($fd['ID']))
+                continue;
             $fdId = $fd['ID'];
             $loanBorrowed = false;
             foreach ($onlineLoanList as $onlineLoan) {
