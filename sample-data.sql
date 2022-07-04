@@ -38,8 +38,10 @@ VALUES (
 
 -- branch table
 INSERT INTO `branch`
+(ID, Name, Address)
 VALUES (
             'dc517d80-82cb-47b4-8bf9-3a82410cec8f',
+            'Negombo',
             '35, Barley Road, Negombo'
        );
 
