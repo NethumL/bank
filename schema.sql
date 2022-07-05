@@ -96,6 +96,14 @@ CREATE TABLE `FD`
     FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`)
 );
 
+CREATE TABLE `Loan_Plan`
+(
+    `ID`        int NOT NULL AUTO_INCREMENT,
+    `Interest_Rate` int NOT NULL,
+    `Duration` int NOT NULL,
+    PRIMARY KEY (`ID`)
+);
+
 CREATE TABLE `Loan`
 (
     `ID`           varchar(36)                          NOT NULL,
@@ -105,9 +113,13 @@ CREATE TABLE `Loan`
     `Created_Time` timestamp                            NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `Amount`    decimal(15,2)                        NOT NULL,
     `Loan_Mode` enum ('NORMAL', 'ONLINE')        NOT NULL,
+    `Plan_ID`   int NOT NULL,
+    `Reason`    text,
     PRIMARY KEY (`ID`),
-    FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`)
+    FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`),
+    FOREIGN KEY (`Plan_ID`) REFERENCES `Loan_Plan` (`ID`)
 );
+
 
 CREATE TABLE `Normal_Loan`
 (
@@ -162,7 +174,7 @@ CREATE EVENT fd_interest
                 SELECT TIMESTAMPDIFF(DAY, @t, current_timestamp()) INTO @time_diff;
 
                 IF @time_diff MOD month_length = 0 AND @time_diff <= @d * month_length THEN
-                    UPDATE Account SET Amount = Amount + @a * @r / 100 WHERE Account_Number = @s;
+                    UPDATE Account SET Amount = Amount + @a * @r / (100 * 12) WHERE Account_Number = @s;
                     IF @time_diff = @d * month_length THEN
                         UPDATE Account SET Amount = Amount + @a WHERE Account_Number = @s;
                         DELETE FROM FD WHERE ID = @id;
@@ -171,4 +183,58 @@ CREATE EVENT fd_interest
                 SET counter = counter + 1;
             END WHILE;
     END $$
+
+CREATE EVENT savings_interest
+    ON SCHEDULE EVERY 1 DAY
+    ON COMPLETION PRESERVE
+    DO
+    BEGIN
+        DECLARE length INT DEFAULT 0;
+        DECLARE counter INT DEFAULT 0;
+        DECLARE month_length INT DEFAULT 30;
+        SELECT COUNT(*) FROM Savings INTO length;
+        SET counter = 0;
+        SET month_length = 30;
+        WHILE counter < length
+            DO
+                SELECT S.Account_Number, A.Created_Time, SP.Interest_Rate
+                INTO @num, @t, @r
+                FROM Savings S
+                         JOIN Savings_Plan SP ON S.Plan_ID = SP.ID
+                         JOIN Account A ON S.Account_Number = A.Account_Number
+                LIMIT counter, 1;
+
+                SELECT TIMESTAMPDIFF(DAY, @t, current_timestamp()) INTO @time_diff;
+
+                IF @time_diff MOD month_length = 0 THEN
+                    UPDATE Account SET Amount = Amount + @a * @r / (100 * 12) WHERE Account_Number = @num;
+                END IF;
+                SET counter = counter + 1;
+            END WHILE;
+    END $$
+
+CREATE TRIGGER limit_withdrawals
+    BEFORE INSERT
+    ON `Transaction`
+    FOR EACH ROW
+BEGIN
+    DECLARE maximum_withdrawals INT;
+    SET maximum_withdrawals = 5;
+
+    IF (NEW.Type = 'WITHDRAWAL') THEN
+        IF (SELECT 1 FROM Account WHERE Account_Number = NEW.From AND Account_Type = 'SAVINGS') THEN
+            SELECT COUNT(*)
+            INTO @count
+            FROM Transaction
+            WHERE `From` = NEW.From
+              AND Type = 'WITHDRAWAL'
+              AND MONTH(Created_Time) = MONTH(NOW());
+
+            IF (@count >= maximum_withdrawals) THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No more withdrawals this month';
+            END IF;
+        END IF;
+    END IF;
+END $$
+
 DELIMITER ;

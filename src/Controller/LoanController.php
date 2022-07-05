@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Loan;
+use App\Entity\NormalLoan;
 use App\Entity\OnlineLoan;
 use App\Entity\User;
+use App\Form\LoanRequestType;
 use App\Form\OnlineLoanType;
 use App\Repository\FdRepository;
 use App\Repository\LoanRepository;
+use App\Repository\UserRepository;
 use App\Util\MoneyUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +36,7 @@ class LoanController extends AbstractController
         $fdList = $fdRepository->findByUser($userId);
         $onlineLoanList = $loanRepository->findOnlineLoansByUser($userId);
         $eligibleFdList = [];
+        $loanPlans = $loanRepository->getLoanPlans();
 
         foreach ($fdList as $idx => $fd) {
             if ($fdRepository->isExpired($fd['ID']))
@@ -67,7 +72,8 @@ class LoanController extends AbstractController
             $onlineLoanObj,
             [
                 'loanEligibility' => $loanEligibility,
-                'eligibleFdList' => $eligibleFdList
+                'eligibleFdList' => $eligibleFdList,
+                'loanPlans' => $loanPlans
             ]
         );
 
@@ -92,9 +98,47 @@ class LoanController extends AbstractController
     }
 
     #[Route('/loan/request', name: 'app_loan_request')]
-    public function request(): Response
+    public function request(
+        Request $request,
+        LoanRepository $loanRepository,
+        UserRepository $userRepository
+    ): Response
     {
-        return $this->render('loan/request.html.twig', [
+        $loanData = [];
+        $loanPlans = $loanRepository->getLoanPlans();
+
+        $form = $this->createForm(
+            LoanRequestType::class,
+            $loanData,
+            [
+                'loanPlans' => $loanPlans
+            ]
+        );
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $loanData = $form->getData();
+            $normalLoan = new NormalLoan();
+
+            $user = $userRepository->findOneByUsername($loanData['username']);
+
+            $normalLoan->setId(Uuid::v4());
+            $normalLoan->setUser($user);
+            $normalLoan->setLoanType($loanData['loanType']);
+            $normalLoan->setStatus('CREATED');
+            $normalLoan->setAmount($loanData['amount']);
+            $normalLoan->setLoanMode('NORMAL');
+            $normalLoan->setPlanId($loanData['planId']);
+            $normalLoan->setReason($loanData['reason']);
+            $normalLoan->setAccountNumber($loanData['accountNumber']);
+
+            $loanRepository->insertNormalLoan($normalLoan);
+            return $this->redirectToRoute('app_loan_request');
+        }
+
+        return $this->renderForm('loan/request.html.twig', [
+            'form' => $form,
             'controller_name' => 'LoanController',
         ]);
     }

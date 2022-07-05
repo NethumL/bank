@@ -45,17 +45,17 @@ class TransferController extends AbstractController
             $transfer = $form->getData();
             $transfer->setType("TRANSFER");
 
-            $fromAccount = $accountRepository->findOne($transfer->getFrom());
-            $amountToTransfer = $moneyUtils->parseString($transfer->getAmount());
-            $toAccount = $accountRepository->findOne($transfer->getTo());
-
-            $newAmountInFrom = $moneyUtils->parseString($fromAccount['Amount'])->subtract($amountToTransfer);
-            $newAmountInTo = $moneyUtils->parseString($toAccount['Amount'])->add($amountToTransfer);
-
             $conn = $this->em->getConnection();
             $conn->beginTransaction();
 
             try {
+                $fromAccount = $accountRepository->findOne($transfer->getFrom());
+                $amountToTransfer = $moneyUtils->parseString($transfer->getAmount());
+                $toAccount = $accountRepository->findOne($transfer->getTo());
+
+                $newAmountInFrom = $moneyUtils->parseString($fromAccount['Amount'])->subtract($amountToTransfer);
+                $newAmountInTo = $moneyUtils->parseString($toAccount['Amount'])->add($amountToTransfer);
+
                 $transactionRepository->insert($transfer);
                 $accountRepository->updateAmount($fromAccount['Account_Number'], $moneyUtils->format($newAmountInFrom));
                 $accountRepository->updateAmount($toAccount['Account_Number'], $moneyUtils->format($newAmountInTo));

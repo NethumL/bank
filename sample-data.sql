@@ -100,6 +100,21 @@ VALUES (
            30000
        );
 
+-- Loan_Plan table
+INSERT INTO `loan_plan`
+(Interest_Rate, Duration)
+VALUES (
+            5,
+            12
+       );
+
+INSERT INTO `loan_plan`
+(Interest_Rate, Duration)
+VALUES (
+           7,
+           24
+       );
+
 -- loan table
 INSERT INTO `loan`
 (ID, User_ID, Loan_Type, Status, Amount, Loan_Mode)

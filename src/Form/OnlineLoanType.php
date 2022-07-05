@@ -18,19 +18,24 @@ class OnlineLoanType extends AbstractType
     {
         $loanEligibility = $options['loanEligibility'];
         $eligibleFdList = $options['eligibleFdList'];
-        $choicesList = [];
+        $fdChoicesList = [];
         $attrList = [];
         foreach ($eligibleFdList as $id=>$value) {
-            $choicesList[$id] = $id;
+            $fdChoicesList[$id] = $id;
             $attrList[$id] = [
                 'data-amount' => $value
             ];
+        }
+        $loanPlans = $options['loanPlans'];
+        $loanPlansChoiceList = [];
+        foreach ($loanPlans as $idx=>$loanPlan) {
+            $loanPlansChoiceList[$loanPlan['Interest_Rate'] . '%, ' . $loanPlan['Duration'] . ' months'] = $loanPlan['ID'];
         }
 
         if ($loanEligibility) {
             $builder
                 ->add('fdId', ChoiceType::class, [
-                    'choices' => $choicesList,
+                    'choices' => $fdChoicesList,
                     'choice_attr' => $attrList
                 ])
                 ->add('loanType', ChoiceType::class, [
@@ -46,6 +51,10 @@ class OnlineLoanType extends AbstractType
                         new GreaterThanOrEqual(1000)
                     ]
                 ])
+                ->add('planId', ChoiceType::class, [
+                    'label' => 'Plan',
+                    'choices' => $loanPlansChoiceList
+                ])
                 ->add('submit', SubmitType::class)
             ;
         }
@@ -56,10 +65,12 @@ class OnlineLoanType extends AbstractType
         $resolver->setDefaults([
             'data_class' => OnlineLoan::class,
             'loanEligibility' => true,
-            'eligibleFdList' => []
+            'eligibleFdList' => [],
+            'loanPlans' => [],
         ]);
 
         $resolver->setAllowedTypes('loanEligibility', 'bool');
         $resolver->setAllowedTypes('eligibleFdList', 'array');
+        $resolver->addAllowedTypes('loanPlans', 'array');
     }
 }

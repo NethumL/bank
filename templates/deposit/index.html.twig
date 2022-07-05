@@ -8,18 +8,19 @@
         <div class="card w-50">
             <div class="card-body">
                 {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+                {{ form_errors(form) }}
                 <div class="row mb-3">
                     {{ form_label(form.to, 'Account', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.to) }}
                         {{ form_widget(form.to) }}
+                        {{ form_errors(form.to) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     {{ form_label(form.amount, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.amount) }}
                         {{ form_widget(form.amount) }}
+                        {{ form_errors(form.amount) }}
                     </div>
                 </div>
                 <div class="mt-4">

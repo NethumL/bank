@@ -49,6 +49,10 @@ class Loan
 
     private $loanMode;
 
+    private $planId;
+
+    private $reason;
+
     /**
      * @var \DateTime
      *
@@ -137,6 +141,28 @@ class Loan
     {
         $this->loanMode = $mode;
 
+        return $this;
+    }
+
+    public function getPlanId()
+    {
+        return $this->planId;
+    }
+
+    public function setPlanId(string $id): self
+    {
+        $this->planId = $id;
+        return $this;
+    }
+
+    public function getReason()
+    {
+        return $this->reason;
+    }
+
+    public function setReason(string $reason): self
+    {
+        $this->reason = $reason;
         return $this;
     }
 }

@@ -19,7 +19,7 @@ class DepositType extends AbstractType
         $builder
             ->add('to', TextType::class, ['constraints' => [new AccountExists()]])
             ->add('amount', MoneyType::class, [
-                'currency' => '',
+                'currency' => 'LKR',
                 'constraints' => [new Positive(message: "The amount must be positive")]
             ])
             ->add('deposit', SubmitType::class)
