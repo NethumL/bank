@@ -10,6 +10,7 @@ use App\Form\LoanRequestType;
 use App\Form\OnlineLoanType;
 use App\Repository\FdRepository;
 use App\Repository\LoanRepository;
+use App\Repository\UserRepository;
 use App\Util\MoneyUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,15 +98,16 @@ class LoanController extends AbstractController
     #[Route('/loan/request', name: 'app_loan_request')]
     public function request(
         Request $request,
-        LoanRepository $loanRepository
+        LoanRepository $loanRepository,
+        UserRepository $userRepository
     ): Response
     {
-        $loan = [];
+        $loanData = [];
         $loanPlans = $loanRepository->getLoanPlans();
 
         $form = $this->createForm(
             LoanRequestType::class,
-            $loan,
+            $loanData,
             [
                 'loanPlans' => $loanPlans
             ]
@@ -113,8 +115,23 @@ class LoanController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // save data
-            $loan = $form->getData();
+
+            $loanData = $form->getData();
+            $normalLoan = new NormalLoan();
+
+            $user = $userRepository->findOneByUsername($loanData['username']);
+
+            $normalLoan->setId(Uuid::v4());
+            $normalLoan->setUser($user);
+            $normalLoan->setLoanType($loanData['loanType']);
+            $normalLoan->setStatus('CREATED');
+            $normalLoan->setAmount($loanData['amount']);
+            $normalLoan->setLoanMode('NORMAL');
+            $normalLoan->setPlanId($loanData['planId']);
+            $normalLoan->setReason($loanData['reason']);
+            $normalLoan->setAccountNumber($loanData['accountNumber']);
+
+            $loanRepository->insertNormalLoan($normalLoan);
             return $this->redirectToRoute('app_loan_request');
         }
 
