@@ -1,19 +1,19 @@
 <div class="card w-50">
     <div class="card-body">
         {{ form_start(form) }}
+        {{ form_errors(form) }}
         <div class="row mb-3">
-            {{ form_errors(form) }}
             {{ form_label(form.Name, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
             <div class="col-sm-9">
-                {{ form_errors(form.Name) }}
                 {{ form_widget(form.Name) }}
+                {{ form_errors(form.Name) }}
             </div>
         </div>
         <div class="row mb-3">
             {{ form_label(form.Address, null,{'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
             <div class="col-sm-9">
-                {{ form_errors(form.Address) }}
                 {{ form_widget(form.Address) }}
+                {{ form_errors(form.Address) }}
             </div>
         </div>
         <div class="mt-3">

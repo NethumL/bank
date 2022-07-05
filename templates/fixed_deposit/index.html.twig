@@ -8,30 +8,30 @@
     <div class="card w-50">
         <div class="card-body">
             {{ form_start(form, {'attr': {'class': 'needs-validation', 'data-savings-id': form.savingsAccount.vars.id, 'data-amount-id': form.amount.vars.id}}) }}
+                {{ form_errors(form) }}
                 <div class="row mb-3">
-                    {{ form_errors(form) }}
                     {{ form_label(form.savingsAccount, 'Savings Account', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.savingsAccount) }}
                         {{ form_widget(form.savingsAccount) }}
+                        {{ form_errors(form.savingsAccount) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     {{ form_label(form.plan, 'Plan', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.plan) }}
                         {{ form_widget(form.plan) }}
+                        {{ form_errors(form.plan) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     {{ form_label(form.amount, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.amount) }}
                         {{ form_widget(form.amount) }}
+                        {{ form_errors(form.amount) }}
                     </div>
                 </div>
-                {{ form_errors(form.agree) }}
                 {{ form_widget(form.agree) }}
+                {{ form_errors(form.agree) }}
                 <div class="mt-4">
                     {{ form_widget(form.submit, {'attr': {'class': 'btn-success btn-block waves-effect waves-light'}}) }}
                 </div>

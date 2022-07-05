@@ -8,61 +8,61 @@
         <div class="card w-50">
             <div class="card-body">
                 {{ form_start(form) }}
+                {{ form_errors(form) }}
                 <div class="row mb-3">
-                    {{ form_errors(form) }}
                     {{ form_label(form.username, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.username) }}
                         {{ form_widget(form.username) }}
+                        {{ form_errors(form.username) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     {{ form_label(form.name, null,{'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.name) }}
                         {{ form_widget(form.name) }}
+                        {{ form_errors(form.name) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     {{ form_label(form.password, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.password) }}
                         {{ form_widget(form.password) }}
+                        {{ form_errors(form.password) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     {{ form_label(form.userType, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.userType) }}
                         {{ form_widget(form.userType) }}
+                        {{ form_errors(form.userType) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     {{ form_label(form.phoneNumber, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.phoneNumber) }}
                         {{ form_widget(form.phoneNumber) }}
+                        {{ form_errors(form.phoneNumber) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     {{ form_label(form.dob, 'Date of birth', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.dob) }}
                         {{ form_widget(form.dob) }}
+                        {{ form_errors(form.dob) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     {{ form_label(form.address, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.address) }}
                         {{ form_widget(form.address) }}
+                        {{ form_errors(form.address) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     {{ form_label(form.branchId, 'Branch', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_errors(form.branchId) }}
                         {{ form_widget(form.branchId) }}
+                        {{ form_errors(form.branchId) }}
                     </div>
                 </div>
                 <div class="mt-3">

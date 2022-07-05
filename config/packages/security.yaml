@@ -44,6 +44,7 @@ security:
         - { path: '^/admin', roles: ROLE_MANAGER }
         - { path: '^/branch', roles: ROLE_ADMIN }
         - { path: '^/auth/change-password', roles: IS_AUTHENTICATED_FULLY }
+        - { path: '^/deposit', roles: ROLE_EMPLOYEE }
 
 when@test:
     security:
