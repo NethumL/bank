@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
@@ -37,15 +38,28 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         return $uuid;
     }
 
-    public function findOneByUsername(string $username): array|bool
+    public function findOneByUsername(string $username): User|bool
     {
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = 'SELECT * FROM User WHERE User.username = ?';
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery([$username]);
+        $userArray = $resultSet->fetchAssociative();
 
-        return $resultSet->fetchAssociative();
+        if ($userArray) {
+            $user = new User();
+            $user->setId($userArray['ID']);
+            $user->setUsername($userArray['Username']);
+            $user->setPassword($userArray['Password']);
+            $user->setName($userArray['Name']);
+            $user->setUserType($userArray['User_Type']);
+            $user->setPhoneNumber($userArray['Phone_Number']);
+            $user->setDob(DateTime::createFromFormat('Y-m-d', $userArray['DOB']));
+            $user->setAddress($userArray['Address']);
+            return $user;
+        }
+        return $userArray;
     }
 
     public function loadUserByIdentifier(string $identifier): ?UserInterface
