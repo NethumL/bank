@@ -193,7 +193,7 @@
                         {% if is_granted('ROLE_CUSTOMER') %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_transfer') }}">
-                                    <i class="mdi mdi-storefront mr-2"></i>Transactions
+                                    <i class="mdi mdi-bank-transfer mr-2"></i>Transactions
                                 </a>
                             </li>
 
@@ -205,13 +205,13 @@
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_instalment_view') }}">
-                                    <i class="mdi mdi mdi-email-send-outline mr-2"></i>Instalment
+                                    <i class="mdi mdi-cash mr-2"></i>Instalment
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_fixed_deposit') }}">
-                                    <i class="mdi mdi mdi mdi mdi-human-greeting  mr-2"></i>Fixed Deposit
+                                    <i class="mdi mdi-bank-transfer-in mr-2"></i>Fixed Deposit
                                 </a>
                             </li>
                         {% endif %}
@@ -227,7 +227,7 @@
                         {% if is_granted('ROLE_MANAGER') %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_admin_new') }}">
-                                    <i class="mdi mdi mdi mdi mdi-account-plus mr-2"></i>Add user
+                                    <i class="mdi mdi-account-plus mr-2"></i>Add user
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -240,7 +240,7 @@
                         {% if is_granted('ROLE_EMPLOYEE') %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_deposit') }}">
-                                    <i class="mdi mdi-cash mr-2"></i>Deposit money
+                                    <i class="mdi mdi-bank-transfer-in mr-2"></i>Deposit money
                                 </a>
                             </li>
                             <li class="nav-item">
