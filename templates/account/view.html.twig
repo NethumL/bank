@@ -3,12 +3,43 @@
 {% block title %}Hello AccountController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="row justify-content-md-center">
+        <h2 class="header-title">Account</h2>
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-start">
+                    <div class="col">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Account Number</th>
+                                <th>Created Date</th>
+                                <th>Account type</th>
+                                <th>Amount</th>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-</div>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>001</td>
+                                <td>2022/01/15</td>
+                                <td>Current</td>
+                                <td>Rs: 100000.00</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col">
+                        <div class="btn btn-primary btn-sm">
+                            <a class="text-black" href="{{path('app_auth_change_password')}}"><i class="mdi mdi-lock-reset mr-2"></i>Change Password</a>
+                        </div>
+                        <div class="btn btn-primary btn-sm">
+                            <a class="text-black" href="{{path('app_transfer_history')}}"><i class="mdi mdi-clipboard-text-outline mr-2"></i>View Transfer History</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 {% endblock %}
