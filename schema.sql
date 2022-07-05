@@ -162,7 +162,7 @@ CREATE EVENT fd_interest
                 SELECT TIMESTAMPDIFF(DAY, @t, current_timestamp()) INTO @time_diff;
 
                 IF @time_diff MOD month_length = 0 AND @time_diff <= @d * month_length THEN
-                    UPDATE Account SET Amount = Amount + @a * @r / 100 WHERE Account_Number = @s;
+                    UPDATE Account SET Amount = Amount + @a * @r / (100 * 12) WHERE Account_Number = @s;
                     IF @time_diff = @d * month_length THEN
                         UPDATE Account SET Amount = Amount + @a WHERE Account_Number = @s;
                         DELETE FROM FD WHERE ID = @id;
