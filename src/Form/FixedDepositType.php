@@ -46,8 +46,8 @@ class FixedDepositType extends AbstractType
             ->add('savingsAccount', ChoiceType::class, ['choices' => $savingsAccountChoices, 'choice_attr' => $savingsAccountAttrs])
             ->add('plan', ChoiceType::class, ['choices' => $planChoices])
             ->add('amount', MoneyType::class, [
-                'currency' => '',
                 'constraints' => new Positive(message: "The amount must be positive"),
+                'currency' => 'LKR',
             ])
             ->add('agree', CheckboxType::class, [
                 'label' => 'Agree to Terms and Conditions',

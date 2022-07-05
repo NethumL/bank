@@ -38,7 +38,7 @@ class TransferType extends AbstractType
             ->add('to', TextType::class, ['constraints' => [new AccountExists()]])
             ->add('type', HiddenType::class)
             ->add('amount', MoneyType::class, [
-                'currency' => '',
+                'currency' => 'LKR',
                 'constraints' => [new Positive(message: "The amount must be positive")]
             ])
             ->add('description', TextType::class, ['required' => false])
