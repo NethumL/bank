@@ -171,4 +171,34 @@ CREATE EVENT fd_interest
                 SET counter = counter + 1;
             END WHILE;
     END $$
+
+CREATE EVENT savings_interest
+    ON SCHEDULE EVERY 1 DAY
+    ON COMPLETION PRESERVE
+    DO
+    BEGIN
+        DECLARE length INT DEFAULT 0;
+        DECLARE counter INT DEFAULT 0;
+        DECLARE month_length INT DEFAULT 30;
+        SELECT COUNT(*) FROM Savings INTO length;
+        SET counter = 0;
+        SET month_length = 30;
+        WHILE counter < length
+            DO
+                SELECT S.Account_Number, A.Created_Time, SP.Interest_Rate
+                INTO @num, @t, @r
+                FROM Savings S
+                         JOIN Savings_Plan SP ON S.Plan_ID = SP.ID
+                         JOIN Account A ON S.Account_Number = A.Account_Number
+                LIMIT counter, 1;
+
+                SELECT TIMESTAMPDIFF(DAY, @t, current_timestamp()) INTO @time_diff;
+
+                IF @time_diff MOD month_length = 0 THEN
+                    UPDATE Account SET Amount = Amount + @a * @r / (100 * 12) WHERE Account_Number = @num;
+                END IF;
+                SET counter = counter + 1;
+            END WHILE;
+    END $$
+
 DELIMITER ;
