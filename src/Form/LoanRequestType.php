@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\NormalLoan;
+use App\Validator\AreUsernameAndAccountNumberValid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -26,9 +27,7 @@ class LoanRequestType extends AbstractType
 
 
         $builder
-            ->add('username', TextType::class, [
-                'mapped' => false,
-            ])
+            ->add('username', TextType::class)
             ->add('accountNumber', TextType::class)
             ->add('loanType', ChoiceType::class, [
                 'choices' => [
@@ -58,8 +57,8 @@ class LoanRequestType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => NormalLoan::class,
-            'loanPlans' => []
+            'loanPlans' => [],
+            'constraints' => [new AreUsernameAndAccountNumberValid()]
         ]);
 
         $resolver->addAllowedTypes('loanPlans', 'array');

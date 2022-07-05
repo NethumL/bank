@@ -100,7 +100,7 @@ class LoanController extends AbstractController
         LoanRepository $loanRepository
     ): Response
     {
-        $loan = new NormalLoan();
+        $loan = [];
         $loanPlans = $loanRepository->getLoanPlans();
 
         $form = $this->createForm(
@@ -114,6 +114,7 @@ class LoanController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // save data
+            $loan = $form->getData();
             return $this->redirectToRoute('app_loan_request');
         }
 
