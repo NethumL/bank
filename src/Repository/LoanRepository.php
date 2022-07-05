@@ -59,4 +59,12 @@ class LoanRepository extends ServiceEntityRepository
             throw $e;
         }
     }
+
+    public function getLoanPlans()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM Loan_Plan");
+        $resultSet = $stmt->executeQuery();
+        return $resultSet->fetchAllAssociative();
+    }
 }

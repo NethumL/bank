@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Loan;
+use App\Entity\NormalLoan;
 use App\Entity\OnlineLoan;
 use App\Entity\User;
+use App\Form\LoanRequestType;
 use App\Form\OnlineLoanType;
 use App\Repository\FdRepository;
 use App\Repository\LoanRepository;
@@ -92,9 +95,30 @@ class LoanController extends AbstractController
     }
 
     #[Route('/loan/request', name: 'app_loan_request')]
-    public function request(): Response
+    public function request(
+        Request $request,
+        LoanRepository $loanRepository
+    ): Response
     {
-        return $this->render('loan/request.html.twig', [
+        $loan = new NormalLoan();
+        $loanPlans = $loanRepository->getLoanPlans();
+
+        $form = $this->createForm(
+            LoanRequestType::class,
+            $loan,
+            [
+                'loanPlans' => $loanPlans
+            ]
+        );
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // save data
+            return $this->redirectToRoute('app_loan_online');
+        }
+
+        return $this->renderForm('loan/request.html.twig', [
+            'form' => $form,
             'controller_name' => 'LoanController',
         ]);
     }
