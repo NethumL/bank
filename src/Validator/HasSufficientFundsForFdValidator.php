@@ -25,11 +25,11 @@ class HasSufficientFundsForFdValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint): void
     {
-        if (null === $value || '' === $value
-            || null === $value['savingsAccount'] || '' === $value['savingsAccount']
-            || null === $value['plan'] || '' === $value['plan']
-            || null === $value['amount'] || '' === $value['amount']
-            || null === $value['agree'] || '' === $value['agree']
+        if (empty($value)
+            || empty($value['savingsAccount'])
+            || empty($value['plan'])
+            || empty($value['amount'])
+            || empty($value['agree'])
         ) {
             return;
         }
