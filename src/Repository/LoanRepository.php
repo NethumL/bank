@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Loan;
+use App\Entity\NormalLoan;
 use App\Entity\OnlineLoan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -51,6 +52,36 @@ class LoanRepository extends ServiceEntityRepository
             $returnValue = $stmtOnlineLoan->executeStatement([
                 $onlineLoan->getId(),
                 $onlineLoan->getFdId()
+            ]);
+            $conn->commit();
+            return $returnValue;
+        } catch (Exception $e) {
+            $conn->rollBack();
+            throw $e;
+        }
+    }
+
+    public function insertNormalLoan(NormalLoan $loan)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $conn->beginTransaction();
+
+        try {
+            $stmtLoan = $conn->prepare("INSERT INTO Loan(ID, User_ID, Loan_Type, Status, Amount, Loan_Mode, PLan_ID, Reason) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmtLoan->executeStatement([
+                $loan->getId(),
+                $loan->getUser()->getId(),
+                $loan->getLoanType(),
+                $loan->getStatus(),
+                $loan->getAmount(),
+                $loan->getLoanMode(),
+                $loan->getPlanId(),
+                $loan->getReason()
+            ]);
+            $stmtNormalLoan = $conn->prepare("INSERT INTO Normal_Loan(ID, Account_Number) VALUES(?, ?)");
+            $returnValue = $stmtNormalLoan->executeStatement([
+                $loan->getId(),
+                $loan->getAccountNumber()
             ]);
             $conn->commit();
             return $returnValue;
