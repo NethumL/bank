@@ -96,6 +96,14 @@ CREATE TABLE `FD`
     FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`)
 );
 
+CREATE TABLE `Loan_Plan`
+(
+    `ID`        int NOT NULL AUTO_INCREMENT,
+    `Interest_Rate` int NOT NULL,
+    `Duration` int NOT NULL,
+    PRIMARY KEY (`ID`)
+);
+
 CREATE TABLE `Loan`
 (
     `ID`           varchar(36)                          NOT NULL,
@@ -105,9 +113,13 @@ CREATE TABLE `Loan`
     `Created_Time` timestamp                            NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `Amount`    decimal(15,2)                        NOT NULL,
     `Loan_Mode` enum ('NORMAL', 'ONLINE')        NOT NULL,
+    `Plan_ID`   int NOT NULL,
+    `Reason`    text NOT NULL,
     PRIMARY KEY (`ID`),
-    FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`)
+    FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`),
+    FOREIGN KEY (`Plan_ID`) REFERENCES `Loan_Plan` (`ID`)
 );
+
 
 CREATE TABLE `Normal_Loan`
 (
