@@ -114,7 +114,7 @@ class LoanController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // save data
-            return $this->redirectToRoute('app_loan_online');
+            return $this->redirectToRoute('app_loan_request');
         }
 
         return $this->renderForm('loan/request.html.twig', [
