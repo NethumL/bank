@@ -201,4 +201,28 @@ CREATE EVENT savings_interest
             END WHILE;
     END $$
 
+CREATE TRIGGER limit_withdrawals
+    BEFORE INSERT
+    ON `Transaction`
+    FOR EACH ROW
+BEGIN
+    DECLARE maximum_withdrawals INT;
+    SET maximum_withdrawals = 5;
+
+    IF (NEW.Type = 'WITHDRAWAL') THEN
+        IF (SELECT 1 FROM Account WHERE Account_Number = NEW.From AND Account_Type = 'SAVINGS') THEN
+            SELECT COUNT(*)
+            INTO @count
+            FROM Transaction
+            WHERE `From` = NEW.From
+              AND Type = 'WITHDRAWAL'
+              AND MONTH(Created_Time) = MONTH(NOW());
+
+            IF (@count >= maximum_withdrawals) THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No more withdrawals this month';
+            END IF;
+        END IF;
+    END IF;
+END $$
+
 DELIMITER ;
