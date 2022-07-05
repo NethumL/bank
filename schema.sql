@@ -114,7 +114,7 @@ CREATE TABLE `Loan`
     `Amount`    decimal(15,2)                        NOT NULL,
     `Loan_Mode` enum ('NORMAL', 'ONLINE')        NOT NULL,
     `Plan_ID`   int NOT NULL,
-    `Reason`    text NOT NULL,
+    `Reason`    text,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`),
     FOREIGN KEY (`Plan_ID`) REFERENCES `Loan_Plan` (`ID`)
