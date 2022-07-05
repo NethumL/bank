@@ -237,7 +237,15 @@
                             </li>
                         {% endif %}
 
-{#                        <li class="nav-item">#}
+                        {% if is_granted('ROLE_EMPLOYEE') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_deposit') }}">
+                                    <i class="mdi mdi-cash mr-2"></i>Deposit money
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {#                        <li class="nav-item">#}
 {#                            <a class="nav-link" href="feedback.php">#}
 {#                                <i class="mdi mdi mdi mdi-heart-outline mr-2"></i>Feedback#}
 {#                            </a>#}
