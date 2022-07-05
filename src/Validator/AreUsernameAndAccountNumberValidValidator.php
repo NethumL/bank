@@ -39,7 +39,7 @@ class AreUsernameAndAccountNumberValidValidator extends ConstraintValidator
                 function ($account) {
                     return $account['Account_Number'];
                 },
-                $this->accountRepository->findByUser($user['ID'], 'SAVINGS')
+                $this->accountRepository->findByUser($user->getId(), 'SAVINGS')
             );
 
             if (!in_array($value['accountNumber'], $savingsAccountNumbers, true)) {
