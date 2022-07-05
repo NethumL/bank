@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deposit money{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-md-center">
+        <h2>Deposit money</h2>
+        <div class="card w-50">
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+                <div class="row mb-3">
+                    {{ form_label(form.to, 'Account', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_errors(form.to) }}
+                        {{ form_widget(form.to) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.amount, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_errors(form.amount) }}
+                        {{ form_widget(form.amount) }}
+                    </div>
+                </div>
+                <div class="mt-4">
+                    {{ form_widget(form.deposit, {'attr': {'class': 'btn-success btn-block waves-effect waves-light'}}) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

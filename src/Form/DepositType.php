@@ -3,26 +3,26 @@
 namespace App\Form;
 
 use App\Entity\Transaction;
+use App\Validator\AccountExists;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Positive;
 
-class InstalmentPaymentType extends AbstractType
+class DepositType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $accountChoices = [];
-        foreach ($options['accounts'] as $account) {
-            $accountChoices[$account['Account_Number'] . ' (Rs. ' . $account['Amount'] . ')'] = $account['Account_Number'];
-        }
-
         $builder
-            ->add('from', ChoiceType::class, ['choices' => $accountChoices])
-            ->add('amount', TextType::class, ['disabled' => true])
-            ->add('pay', SubmitType::class)
+            ->add('to', TextType::class, ['constraints' => [new AccountExists()]])
+            ->add('amount', MoneyType::class, [
+                'currency' => '',
+                'constraints' => [new Positive(message: "The amount must be positive")]
+            ])
+            ->add('deposit', SubmitType::class)
         ;
     }
 
@@ -30,9 +30,6 @@ class InstalmentPaymentType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Transaction::class,
-            'accounts' => []
         ]);
-
-        $resolver->setAllowedTypes('accounts', 'array');
     }
 }

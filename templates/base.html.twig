@@ -216,7 +216,20 @@
                             </li>
                         {% endif %}
 
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_branch_index') }}">
+                                    <i class="mdi mdi mdi mdi mdi-bank mr-2"></i>Branches
+                                </a>
+                            </li>
+                        {% endif %}
+
                         {% if is_granted('ROLE_MANAGER') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_admin_new') }}">
+                                    <i class="mdi mdi mdi mdi mdi-account-plus mr-2"></i>Add user
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_report_generate') }}">
                                     <i class="mdi mdi mdi mdi mdi-book-open mr-2"></i>Report

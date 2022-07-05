@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello InstalmentController!{% endblock %}
+{% block title %}Instalment View{% endblock %}
 
 {% block body %}
     <h2>Instalment View</h2>
@@ -11,26 +11,36 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Instalment ID</th>
-                            <th>Loan ID</th>
+                            <th>Loan type</th>
                             <th>Year</th>
                             <th>Month</th>
                             <th>Amount</th>
                             <th>Status</th>
+                            <th>Pay</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr onclick="window.location='#';">
-                            <td>1111</td>
-                            <td>2222</td>
-                            <td>2022</td>
-                            <td>January</td>
-                            <td>100000</td>
-                            <td>pending</td>
-                        </tr>
+                        {% for instalment in instalments %}
+                            <tr>
+                                <td>{{ instalment['Loan_Type'] }}</td>
+                                <td>{{ instalment['Year'] }}</td>
+                                <td>{{ instalment['Month'] }}</td>
+                                <td>{{ instalment['Amount'] }}</td>
+                                <td>{{ instalment['Status'] == 'PAID' ? 'Paid' : 'Unpaid' }}</td>
+                                <td>
+                                    {% if instalment['Status'] == 'CREATED' %}
+                                        <a class="btn btn-success btn-sm"
+                                    {% else %}
+                                        <a class="btn btn-success btn-sm disabled"
+                                    {% endif %}
+                                           href="{{ url('app_instalment_pay', { 'id': instalment['ID'] }) }}">
+                                            <i class="mdi mdi-cash"></i>
+                                        </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>

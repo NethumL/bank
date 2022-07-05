@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Branches{% endblock %}
+
+{% block body %}
+    <h2>Branches</h2>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Manager</th>
+            <th>Show</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for branch in branches %}
+            <tr>
+                <td>{{ branch['ID'] }}</td>
+                <td>{{ branch['Name'] }}</td>
+                <td>{{ branch['Address'] }}</td>
+                <td data-id="{{ branch['Manager_ID'] }}">{{ branch['Manager_Name'] }}</td>
+                <td>
+                    <a class="btn btn-outline-info btn-sm" href="{{ path('app_branch_show', {'id': branch['ID']}) }}">
+                        <i class="mdi mdi-eye"></i>
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-outline-warning btn-sm"
+                       href="{{ path('app_branch_edit', {'id': branch['ID']}) }}">
+                        <i class="mdi mdi-pencil"></i>
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_branch_new') }}">Create new</a>
+{% endblock %}

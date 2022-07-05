@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Branch{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-md-center">
+        <h2>Edit Branch</h2>
+
+        {{ include('branch/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
+
+    <a class="btn btn-primary mb-4" href="{{ path('app_branch_index') }}">back to list</a>
+
+    {{ include('branch/_delete_form.html.twig') }}
+{% endblock %}
