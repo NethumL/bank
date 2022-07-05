@@ -39,14 +39,15 @@ class LoanRepository extends ServiceEntityRepository
         $conn->beginTransaction();
 
         try {
-            $stmtLoan = $conn->prepare("INSERT INTO Loan(ID, User_ID, Loan_Type, Status, Amount, Loan_Mode) VALUES(?, ?, ?, ?, ?, ?)");
+            $stmtLoan = $conn->prepare("INSERT INTO Loan(ID, User_ID, Loan_Type, Status, Amount, Loan_Mode, Plan_ID) VALUES(?, ?, ?, ?, ?, ?, ?)");
             $stmtLoan->executeStatement([
                 $onlineLoan->getId(),
                 $onlineLoan->getUser()->getId(),
                 $onlineLoan->getLoanType(),
                 $onlineLoan->getStatus(),
                 $onlineLoan->getAmount(),
-                $onlineLoan->getLoanMode()
+                $onlineLoan->getLoanMode(),
+                $onlineLoan->getPlanId()
             ]);
             $stmtOnlineLoan = $conn->prepare("INSERT INTO Online_Loan(ID, FD_ID) VALUES(?, ?)");
             $returnValue = $stmtOnlineLoan->executeStatement([

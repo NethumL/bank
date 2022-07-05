@@ -36,6 +36,7 @@ class LoanController extends AbstractController
         $fdList = $fdRepository->findByUser($userId);
         $onlineLoanList = $loanRepository->findOnlineLoansByUser($userId);
         $eligibleFdList = [];
+        $loanPlans = $loanRepository->getLoanPlans();
 
         foreach ($fdList as $idx => $fd) {
             if ($fdRepository->isExpired($fd['ID']))
@@ -71,7 +72,8 @@ class LoanController extends AbstractController
             $onlineLoanObj,
             [
                 'loanEligibility' => $loanEligibility,
-                'eligibleFdList' => $eligibleFdList
+                'eligibleFdList' => $eligibleFdList,
+                'loanPlans' => $loanPlans
             ]
         );
 
