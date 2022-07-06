@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\InstalmentSet;
 use App\Entity\Loan;
 use App\Entity\NormalLoan;
 use App\Entity\OnlineLoan;
@@ -9,6 +10,7 @@ use App\Entity\User;
 use App\Form\LoanRequestType;
 use App\Form\OnlineLoanType;
 use App\Repository\FdRepository;
+use App\Repository\InstalmentRepository;
 use App\Repository\LoanRepository;
 use App\Repository\UserRepository;
 use App\Util\MoneyUtils;
@@ -25,6 +27,7 @@ class LoanController extends AbstractController
         Request $request,
         FdRepository $fdRepository,
         LoanRepository $loanRepository,
+        InstalmentRepository $instalmentRepository,
         MoneyUtils $moneyUtils
     ): Response
     {
@@ -86,7 +89,19 @@ class LoanController extends AbstractController
             $onlineLoanObj->setStatus('APPROVED');
             $onlineLoanObj->setLoanMode('ONLINE');
 
+            $loanPlanId = $onlineLoanObj->getPlanId();
+            $loanPlan = $loanRepository->getLoanPlanById($loanPlanId);
+
             $loanRepository->insertOnlineLoan($onlineLoanObj);
+
+            $instalmentSet = new InstalmentSet(
+                $onlineLoanObj->getId(),
+                $onlineLoanObj->getAmount(),
+                $loanPlan['Interest_Rate'],
+                $loanPlan['Duration']
+            );
+            $instalmentRepository->insertInstalmentSet($instalmentSet);
+
             return $this->redirectToRoute('app_loan_online');
         }
 
