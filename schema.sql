@@ -99,7 +99,7 @@ CREATE TABLE `FD`
 CREATE TABLE `Loan_Plan`
 (
     `ID`        int NOT NULL AUTO_INCREMENT,
-    `Interest_Rate` int NOT NULL,
+    `Interest_Rate` decimal(5, 2) NOT NULL,
     `Duration` int NOT NULL,
     PRIMARY KEY (`ID`)
 );
