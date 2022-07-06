@@ -34,10 +34,11 @@ ALTER TABLE `Employee` ADD FOREIGN KEY (`Branch_ID`) REFERENCES `Branch`(`ID`) O
 CREATE TABLE `Savings_Plan`
 (
     `ID`              int            NOT NULL AUTO_INCREMENT,
+    `Name`            varchar(20)    NOT NULL,
     `Interest_Rate`   int            NOT NULL,
     `Minimum_Balance` decimal(15, 2) NOT NULL,
-    `Minimum_Age`     int            NOT NULL,
-    `Maximum_Age`     int            NOT NULL,
+    `Minimum_Age`     int            NULL,
+    `Maximum_Age`     int            NULL,
     PRIMARY KEY (`ID`)
 );
 

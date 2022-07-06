@@ -38,16 +38,23 @@ class SavingsPlan
     /**
      * @var int
      *
-     * @ORM\Column(name="Minimum_Age", type="integer", nullable=false)
+     * @ORM\Column(name="Minimum_Age", type="integer", nullable=true)
      */
     private $minimumAge;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="Maximum_Age", type="integer", nullable=false)
+     * @ORM\Column(name="Maximum_Age", type="integer", nullable=true)
      */
     private $maximumAge;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Name", type="string", length=20, nullable=false)
+     */
+    private $name;
 
     public function getId(): ?int
     {
@@ -102,5 +109,15 @@ class SavingsPlan
         return $this;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
 }
