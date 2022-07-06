@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\InstalmentSet;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
+use Symfony\Component\Uid\Uuid;
 
 class InstalmentRepository extends ServiceEntityRepository
 {
@@ -34,5 +37,33 @@ class InstalmentRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $stmt = $conn->prepare("UPDATE Installment SET Status='PAID' WHERE ID = ?");
         return $stmt->executeStatement([$instalmentId]);
+    }
+
+    public function insertInstalmentSet(InstalmentSet $instalmentSet)
+    {
+        $instalments = $instalmentSet->getInstalments();
+        if (sizeof($instalments)) {
+            $conn = $this->getEntityManager()->getConnection();
+            $conn->beginTransaction();
+            try {
+                $returnValue = 0;
+                foreach($instalments as $instalment) {
+                    $stmtLoan = $conn->prepare("INSERT INTO Installment(ID, Loan_ID, Year, Month, Amount, Status) VALUES (?, ?, ?, ?, ?, ?)");
+                    $returnValue = $stmtLoan->executeStatement([
+                        Uuid::v4(),
+                        $instalmentSet->getLoanID(),
+                        $instalment['year'],
+                        $instalment['month'],
+                        $instalment['amount'],
+                        'CREATED'
+                    ]);
+                }
+                $conn->commit();
+                return $returnValue;
+            } catch (Exception $e) {
+                $conn->rollBack();
+                throw $e;
+            }
+        }
     }
 }
