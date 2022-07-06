@@ -7,7 +7,54 @@
         <h2>Loan Request Form</h2>
         <div class="card w-50">
             <div class="card-body">
-                {{ form(form) }}
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="row mb-3">
+                    {{ form_label(form.username, 'Username', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.username) }}
+                        {{ form_errors(form.username) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.accountNumber, 'Account Number', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.accountNumber) }}
+                        {{ form_errors(form.accountNumber) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.loanType, 'Loan Type', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.loanType) }}
+                        {{ form_errors(form.loanType) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.amount, 'Amount', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.amount) }}
+                        {{ form_errors(form.amount) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.planId, 'Plan', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.planId) }}
+                        {{ form_errors(form.planId) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.reason, 'Reason', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.reason) }}
+                        {{ form_errors(form.reason) }}
+                    </div>
+                </div>
+                <div class="mt-3">
+                    {{ form_widget(form.submit, {'attr': {'class': 'btn-success'}}) }}
+                </div>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
