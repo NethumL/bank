@@ -99,4 +99,12 @@ class LoanRepository extends ServiceEntityRepository
         $resultSet = $stmt->executeQuery();
         return $resultSet->fetchAllAssociative();
     }
+
+    public function getLoanPlanById(string $ID)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM Loan_Plan WHERE ID=?");
+        $resultSet = $stmt->executeQuery([$ID]);
+        return $resultSet->fetchAssociative();
+    }
 }
