@@ -104,7 +104,7 @@ VALUES (
 INSERT INTO `loan_plan`
 (Interest_Rate, Duration)
 VALUES (
-            5,
+            5.5,
             12
        );
 
