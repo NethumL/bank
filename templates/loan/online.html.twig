@@ -25,6 +25,38 @@
                     }
                 )
                 }}
+                {{ form_errors(form) }}
+                <div class="row mb-3">
+                    {{ form_label(form.fdId, 'FD ID', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.fdId) }}
+                        {{ form_errors(form.fdId) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.loanType, 'Loan Type', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.loanType) }}
+                        {{ form_errors(form.loanType) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.amount, null, {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.amount) }}
+                        {{ form_errors(form.amount) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.planId, null, {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.planId) }}
+                        {{ form_errors(form.planId) }}
+                    </div>
+                </div>
+                <div class="mt-3">
+                    {{ form_widget(form.submit, {'attr': {'class': 'btn-success'}}) }}
+                </div>
                 {{ form_end(form) }}
             </div>
         </div>
