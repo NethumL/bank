@@ -9,11 +9,13 @@ use App\Entity\OnlineLoan;
 use App\Entity\User;
 use App\Form\LoanRequestType;
 use App\Form\OnlineLoanType;
+use App\Repository\AccountRepository;
 use App\Repository\FdRepository;
 use App\Repository\InstalmentRepository;
 use App\Repository\LoanRepository;
 use App\Repository\UserRepository;
 use App\Util\MoneyUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,12 +24,20 @@ use Symfony\Component\Uid\Uuid;
 
 class LoanController extends AbstractController
 {
+    private EntityManagerInterface $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     #[Route('/loan/online', name: 'app_loan_online', methods: ['GET', 'POST'])]
     public function online(
         Request $request,
         FdRepository $fdRepository,
         LoanRepository $loanRepository,
         InstalmentRepository $instalmentRepository,
+        AccountRepository $accountRepository,
         MoneyUtils $moneyUtils
     ): Response
     {
@@ -90,17 +100,34 @@ class LoanController extends AbstractController
             $onlineLoanObj->setLoanMode('ONLINE');
 
             $loanPlanId = $onlineLoanObj->getPlanId();
-            $loanPlan = $loanRepository->getLoanPlanById($loanPlanId);
 
-            $loanRepository->insertOnlineLoan($onlineLoanObj);
+            $conn = $this->em->getConnection();
+            $conn->beginTransaction();
+            try {
+                $loanPlan = $loanRepository->getLoanPlanById($loanPlanId);
 
-            $instalmentSet = new InstalmentSet(
-                $onlineLoanObj->getId(),
-                $onlineLoanObj->getAmount(),
-                $loanPlan['Interest_Rate'],
-                $loanPlan['Duration']
-            );
-            $instalmentRepository->insertInstalmentSet($instalmentSet);
+                $loanRepository->insertOnlineLoan($onlineLoanObj);
+                $instalmentSet = new InstalmentSet(
+                    $onlineLoanObj->getId(),
+                    $onlineLoanObj->getAmount(),
+                    $loanPlan['Interest_Rate'],
+                    $loanPlan['Duration']
+                );
+                $instalmentRepository->insertInstalmentSet($instalmentSet);
+
+                $fd = $fdRepository->findOne($onlineLoanObj->getFdId());
+                $savingsAccountNumber = $fd['Account_Number'];
+                $savingsAccount = $accountRepository->findOne($savingsAccountNumber);
+                $currentAmount = $moneyUtils->parseString($savingsAccount['Amount']);
+                $amountIn = $moneyUtils->parseString($onlineLoanObj->getAmount());
+                $newAmount = $moneyUtils->format($currentAmount->add($amountIn));
+                $accountRepository->updateAmount($savingsAccountNumber, $newAmount);
+
+                $conn->commit();
+            } catch (Exception $e) {
+                $conn->rollBack();
+                throw $e;
+            }
 
             return $this->redirectToRoute('app_loan_online');
         }
