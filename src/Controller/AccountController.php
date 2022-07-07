@@ -113,7 +113,6 @@ class AccountController extends AbstractController
         $fds = $fdRepository->findByUser($user->getId());
 
         return $this->render('account/view.html.twig', [
-            'controller_name' => 'AccountController',
             'accounts' => $accounts,
             'fds' => $fds
         ]);

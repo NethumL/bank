@@ -47,6 +47,7 @@ security:
         - { path: '^/deposit', roles: ROLE_EMPLOYEE }
         - { path: '^/account/create-new', roles: ROLE_EMPLOYEE }
         - { path: '^/account/create', roles: ROLE_EMPLOYEE }
+        - { path: '^/account/view', roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
