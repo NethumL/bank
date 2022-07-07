@@ -41,6 +41,7 @@ class InstalmentRepository extends ServiceEntityRepository
 
     public function insertInstalmentSet(InstalmentSet $instalmentSet)
     {
+        $conn = $this->getEntityManager()->getConnection();
         $instalments = $instalmentSet->getInstalments();
         if (sizeof($instalments)) {
             $returnValue = 0;
