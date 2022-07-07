@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\AccountType;
+use App\Form\CustomerType;
 use App\Repository\AccountRepository;
 use App\Repository\EmployeeRepository;
+use App\Repository\FdRepository;
 use App\Repository\SavingsRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +15,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AccountController extends AbstractController
@@ -25,10 +28,29 @@ class AccountController extends AbstractController
     }
 
     #[Route('/account/create', name: 'app_account_create')]
-    public function create(): Response
+    public function create(
+        Request                     $request,
+        UserPasswordHasherInterface $passwordHasher,
+        UserRepository              $userRepository,
+    ): Response
+
     {
-        return $this->render('account/create.html.twig', [
-            'controller_name' => 'AccountController',
+        $customer = new User();
+        $form = $this->createForm(CustomerType::class, $customer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $customer */
+            $customer = $form->getData();
+            $customer->setUserType('CUSTOMER');
+            $hashedPassword = $passwordHasher->hashPassword($customer, $customer->getPassword());
+            $customer->setPassword($hashedPassword);
+            $userRepository->insert($customer);
+            return $this->redirectToRoute('app_account_create');
+        }
+
+        return $this->renderForm('account/create.html.twig', [
+            'form' => $form
         ]);
     }
 
@@ -82,10 +104,17 @@ class AccountController extends AbstractController
     }
 
     #[Route('/account/view', name: 'app_account_view')]
-    public function view(): Response
+    public function view(AccountRepository $accountRepository, FdRepository $fdRepository): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $accounts = $accountRepository->findByUser($user->getId());
+        $fds = $fdRepository->findByUser($user->getId());
+
         return $this->render('account/view.html.twig', [
-            'controller_name' => 'AccountController',
+            'accounts' => $accounts,
+            'fds' => $fds
         ]);
     }
 }

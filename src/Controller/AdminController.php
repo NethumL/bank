@@ -77,7 +77,6 @@ class AdminController extends AbstractController
         }
 
         return $this->renderForm('admin/new.html.twig', [
-            'controller_name' => 'AdminController',
             'form' => $form
         ]);
     }
