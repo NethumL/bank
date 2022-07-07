@@ -21,7 +21,7 @@ class AccountRepository extends ServiceEntityRepository
     public function findByUser(string $userId, string $accountType = ""): array|bool
     {
         $conn = $this->getEntityManager()->getConnection();
-        $sql = "SELECT * FROM Account A WHERE A.User_ID = ?";
+        $sql = "SELECT A.*,Branch.Name AS Branch_Name FROM Account A JOIN Branch ON A.Branch_ID = Branch.ID WHERE A.User_ID = ?";
         $params = [$userId];
         if ($accountType) {
             $sql .= " AND A.Account_Type = ?";
