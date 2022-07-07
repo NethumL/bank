@@ -33,7 +33,7 @@ class LoanRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
     }
 
-m    public function findNormalLoanByID(string $loanID): array|bool
+    public function findNormalLoanByID(string $loanID): array|bool
     {
         $conn = $this->getEntityManager()->getConnection();
         $stmt = $conn->prepare("SELECT * FROM Loan L INNER JOIN Normal_Loan USING(ID) WHERE L.ID = ?");
