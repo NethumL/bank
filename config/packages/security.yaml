@@ -41,11 +41,11 @@ security:
         - { path: '^/loan/online', roles: ROLE_CUSTOMER }
         - { path: '^/loan/request', roles: ROLE_EMPLOYEE }
         - { path: '^/loan/approval', roles: ROLE_MANAGER }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: '^/admin', roles: ROLE_MANAGER }
         - { path: '^/branch', roles: ROLE_ADMIN }
         - { path: '^/auth/change-password', roles: IS_AUTHENTICATED_FULLY }
         - { path: '^/deposit', roles: ROLE_EMPLOYEE }
+        - { path: '^/account/create-new', roles: ROLE_EMPLOYEE }
 
 when@test:
     security:

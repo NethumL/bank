@@ -1,79 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccountController!{% endblock %}
+{% block title %}Create new account{% endblock %}
 
 {% block body %}
     <div class="row justify-content-md-center">
         <h2>Create New Account</h2>
         <div class="card w-50">
             <div class="card-body">
-                <form class="needs-validation" method="post" novalidate>
-                    <h4>Customer Details</h4>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="account">User ID</label>
-                        <div class="col-sm-10">
-                            <input
-                                    type="text"
-                                    class="form-control"
-                                    id="account"
-                                    name='account'
-                                    value="12345678"
-                                    required
-                                    disabled
-                            />
-                        </div>
+                {% for message in app.flashes('new-account-number') %}
+                    {{ message }}
+                {% endfor %}
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="row mb-3">
+                    {{ form_label(form.username, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.username) }}
+                        {{ form_errors(form.username) }}
                     </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="branch">Branch</label>
-                            <div class="col-sm-10">
-                                <select class="form-select" id="branch" name="branch" required>
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="acc_type">Account Type</label>
-                            <div class="col-sm-10">
-                                <select class="form-select" id="acc_type" name="acc_type" required>
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="amount">Amount</label>
-                            <div class="col-sm-10">
-                                <input
-                                        type="number"
-                                        class="form-control"
-                                        id="amount"
-                                        name="amount"
-                                        required
-                                />
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <button
-                                    class="btn btn-success btn-block waves-effect waves-light"
-                                    type="submit"
-                                    name="btn_submit"
-                            >
-                                Create
-                            </button>
-                            <button
-                                    class="btn btn-danger btn-block waves-effect waves-light"
-                                    type="submit"
-                                    name="btn_submit"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                </form>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.accountType, null,{'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.accountType) }}
+                        {{ form_errors(form.accountType) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.savingsPlan, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.savingsPlan) }}
+                        {{ form_errors(form.savingsPlan) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ form_label(form.amount, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.amount) }}
+                        {{ form_errors(form.amount) }}
+                    </div>
+                </div>
+                <div class="mt-3">
+                    {{ form_widget(form.create, {'attr': {'class': 'btn-success'}}) }}
+                </div>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
