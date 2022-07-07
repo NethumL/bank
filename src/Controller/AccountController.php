@@ -7,16 +7,16 @@ use App\Form\AccountType;
 use App\Form\CustomerType;
 use App\Repository\AccountRepository;
 use App\Repository\EmployeeRepository;
+use App\Repository\FdRepository;
 use App\Repository\SavingsRepository;
 use App\Repository\UserRepository;
-use App\Repository\FdRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AccountController extends AbstractController
 {
@@ -35,24 +35,21 @@ class AccountController extends AbstractController
     ): Response
 
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $newUser = new User();
-        $form = $this->createForm(CustomerType::class, $newUser);
+        $customer = new User();
+        $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $newUser */
-            $newUser = $form->getData();
-            $newUser->setUserType('CUSTOMER');
-            $hashedPassword = $passwordHasher->hashPassword($newUser, $newUser->getPassword());
-            $newUser->setPassword($hashedPassword);
-            $userRepository->insert($newUser);
+            /** @var User $customer */
+            $customer = $form->getData();
+            $customer->setUserType('CUSTOMER');
+            $hashedPassword = $passwordHasher->hashPassword($customer, $customer->getPassword());
+            $customer->setPassword($hashedPassword);
+            $userRepository->insert($customer);
             return $this->redirectToRoute('app_account_create');
         }
 
         return $this->renderForm('account/create.html.twig', [
-            'controller_name' => 'AccountController',
             'form' => $form
         ]);
     }
