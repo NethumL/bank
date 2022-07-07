@@ -110,7 +110,7 @@ CREATE TABLE `Loan`
     `ID`           varchar(36)                          NOT NULL,
     `User_ID`      varchar(36)                          NOT NULL,
     `Loan_Type`    enum ('PERSONAL', 'BUSINESS')        NOT NULL,
-    `Status`       enum ('CREATED', 'APPROVED', 'PAID') NOT NULL,
+    `Status`       enum ('CREATED', 'APPROVED', 'REJECTED', 'PAID') NOT NULL,
     `Created_Time` timestamp                            NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `Amount`    decimal(15,2)                        NOT NULL,
     `Loan_Mode` enum ('NORMAL', 'ONLINE')        NOT NULL,

@@ -17,6 +17,7 @@ use App\Repository\UserRepository;
 use App\Util\MoneyUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -186,10 +187,74 @@ class LoanController extends AbstractController
     }
 
     #[Route('/loan/approval', name: 'app_loan_approval')]
-    public function approval(): Response
+    public function approval(
+        Request $request,
+        LoanRepository $loanRepository
+    ): Response
     {
+        $normalLoans = $loanRepository->getAllNormalLoans('CREATED');
+
         return $this->render('loan/approval.html.twig', [
             'controller_name' => 'LoanController',
+            'normalLoans' => $normalLoans
+        ]);
+    }
+
+    #[Route('/loan/approval/{id}', name: 'app_loan_approve', methods: ['PUT'])]
+    public function approve(
+        string $id,
+        Request $request,
+        LoanRepository $loanRepository,
+        AccountRepository $accountRepository,
+        InstalmentRepository $instalmentRepository,
+        MoneyUtils $moneyUtils
+    ): Response
+    {
+        $loan = $loanRepository->findNormalLoanByID($id);
+        if (!$loan || $loan['Status']!=='CREATED') {
+            return $this->json([
+                'success' => false
+            ]);
+        }
+
+        $body = $request->toArray();
+        if ($body['approval']===true) {
+            $loanRepository->markAsApproved($id);
+
+            $conn = $this->em->getConnection();
+            $conn->beginTransaction();
+            try {
+                // deposit amount
+                $moneyAmount = $moneyUtils->parseString($loan['Amount']);
+                $accountNumber = $loan['Account_Number'];
+                $account = $accountRepository->findOne($accountNumber);
+                $currentMoneyAmount = $moneyUtils->parseString($account['Amount']);
+                $newMoneyAmount = $currentMoneyAmount->add($moneyAmount);
+                $accountRepository->updateAmount($accountNumber, $moneyUtils->format($newMoneyAmount));
+
+                // save instalment set
+                $loanPlan = $loanRepository->getLoanPlanById($loan['Plan_ID']);
+                $instalmentSet = new InstalmentSet($loan['ID'], $loan['Amount'], $loanPlan['Interest_Rate'], $loanPlan['Duration']);
+                $instalmentRepository->insertInstalmentSet($instalmentSet);
+
+                $conn->commit();
+                return $this->json([
+                    'success' => true
+                ]);
+            } catch (Exception $e) {
+                $conn->rollBack();
+                return $this->json([
+                    'success' => false
+                ]);
+            }
+        } else if ($body['approval']===false) {
+            $loanRepository->markAsRejected($id);
+            return $this->json([
+                'success' => true
+            ]);
+        }
+        return $this->json([
+            'success' => false
         ]);
     }
 }

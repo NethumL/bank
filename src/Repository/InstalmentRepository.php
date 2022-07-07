@@ -41,29 +41,22 @@ class InstalmentRepository extends ServiceEntityRepository
 
     public function insertInstalmentSet(InstalmentSet $instalmentSet)
     {
+        $conn = $this->getEntityManager()->getConnection();
         $instalments = $instalmentSet->getInstalments();
         if (sizeof($instalments)) {
-            $conn = $this->getEntityManager()->getConnection();
-            $conn->beginTransaction();
-            try {
-                $returnValue = 0;
-                foreach($instalments as $instalment) {
-                    $stmtLoan = $conn->prepare("INSERT INTO Installment(ID, Loan_ID, Year, Month, Amount, Status) VALUES (?, ?, ?, ?, ?, ?)");
-                    $returnValue = $stmtLoan->executeStatement([
-                        Uuid::v4(),
-                        $instalmentSet->getLoanID(),
-                        $instalment['year'],
-                        $instalment['month'],
-                        $instalment['amount'],
-                        'CREATED'
-                    ]);
-                }
-                $conn->commit();
-                return $returnValue;
-            } catch (Exception $e) {
-                $conn->rollBack();
-                throw $e;
+            $returnValue = 0;
+            foreach($instalments as $instalment) {
+                $stmtLoan = $conn->prepare("INSERT INTO Installment(ID, Loan_ID, Year, Month, Amount, Status) VALUES (?, ?, ?, ?, ?, ?)");
+                $returnValue = $stmtLoan->executeStatement([
+                    Uuid::v4(),
+                    $instalmentSet->getLoanID(),
+                    $instalment['year'],
+                    $instalment['month'],
+                    $instalment['amount'],
+                    'CREATED'
+                ]);
             }
+            return $returnValue;
         }
     }
 }

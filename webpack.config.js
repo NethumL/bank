@@ -23,6 +23,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('fixed_deposit', './assets/custom/fixed_deposit.js')
     .addEntry('onlineLoan', './assets/custom/onlineLoan.js')
+    .addEntry('loanApproval', './assets/custom/loanApproval.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

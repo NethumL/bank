@@ -33,6 +33,30 @@ class LoanRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
     }
 
+    public function findNormalLoanByID(string $loanID): array|bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM Loan L INNER JOIN Normal_Loan USING(ID) WHERE L.ID = ?");
+        $resultSet = $stmt->executeQuery([$loanID]);
+        return $resultSet->fetchAssociative();
+    }
+
+    public function getAllNormalLoans(string $status=''): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $string = "SELECT L.*, Normal_Loan.Account_Number, User.Name, Loan_Plan.Duration, Loan_Plan.Interest_Rate FROM Loan L RIGHT JOIN Normal_Loan USING(ID) INNER JOIN User ON User.ID=L.User_ID INNER JOIN Loan_Plan ON Loan_Plan.ID=L.Plan_ID WHERE L.Loan_Mode='NORMAL'";
+        if ($status !=='' && in_array($status, ['CREATED', 'APPROVED', 'PAID'], true)) {
+            $string = $string . ' AND L.Status=?';
+            $stmt = $conn->prepare($string);
+            $resultSet = $stmt->executeQuery([$status]);
+            return $resultSet->fetchAllAssociative();
+        } else {
+            $stmt = $conn->prepare($string);
+            $resultSet = $stmt->executeQuery();
+            return $resultSet->fetchAllAssociative();
+        }
+    }
+
     public function insertOnlineLoan(OnlineLoan $onlineLoan): int
     {
         $conn = $this->getEntityManager()->getConnection();
@@ -106,5 +130,19 @@ class LoanRepository extends ServiceEntityRepository
         $stmt = $conn->prepare("SELECT * FROM Loan_Plan WHERE ID=?");
         $resultSet = $stmt->executeQuery([$ID]);
         return $resultSet->fetchAssociative();
+    }
+
+    public function markAsApproved(string $ID)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("UPDATE Loan SET Status='APPROVED' WHERE ID = ?");
+        return $stmt->executeStatement([$ID]);
+    }
+
+    public function markAsRejected(string $ID)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("UPDATE Loan SET Status='REJECTED' WHERE ID = ?");
+        return $stmt->executeStatement([$ID]);
     }
 }

@@ -1,45 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccountController!{% endblock %}
+{% block title %}View account{% endblock %}
 
 {% block body %}
-    <div class="row justify-content-md-center">
-        <h2 class="header-title">Account</h2>
-        <div class="card">
-            <div class="card-body">
-                <div class="row align-items-start">
-                    <div class="col">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Account Number</th>
-                                <th>Created Date</th>
-                                <th>Account type</th>
-                                <th>Amount</th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>001</td>
-                                <td>2022/01/15</td>
-                                <td>Current</td>
-                                <td>Rs: 100000.00</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col">
-                        <div class="btn btn-primary btn-sm">
-                            <a class="text-black" href="{{path('app_auth_change_password')}}"><i class="mdi mdi-lock-reset mr-2"></i>Change Password</a>
-                        </div>
-                        <div class="btn btn-primary btn-sm">
-                            <a class="text-black" href="{{path('app_transfer_history')}}"><i class="mdi mdi-clipboard-text-outline mr-2"></i>View Transfer History</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+    <div class="justify-content-md-center">
+        <h2>View account</h2>
+        <div class="text-end mb-3">
+            <a class="btn btn-primary btn-sm text-white" href="{{ path('app_auth_change_password') }}">
+                <i class="mdi mdi-lock-reset mr-2"></i>Change Password
+            </a>
+            {% if is_granted('ROLE_CUSTOMER') %}
+                <a class="btn btn-primary btn-sm text-white" href="{{ path('app_transfer_history') }}">
+                    <i class="mdi mdi-clipboard-text-outline mr-2"></i>View Transfer History
+                </a>
+            {% endif %}
         </div>
+        {% if is_granted('ROLE_CUSTOMER') %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Accounts</h5>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Account Number</th>
+                            <th>Branch</th>
+                            <th>Account type</th>
+                            <th>Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for account in accounts %}
+                            <tr>
+                                <td>{{ account['Account_Number'] }}</td>
+                                <td>{{ account['Branch_Name'] }}</td>
+                                <td>{{ account['Account_Type'] }}</td>
+                                <td>Rs. {{ account['Amount'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Fixed Deposits</h5>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>FD</th>
+                            <th>Savings Account Number</th>
+                            <th>Created Time</th>
+                            <th>Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for fd in fds %}
+                            <tr>
+                                <td>{{ fd['ID'] }}</td>
+                                <td>{{ fd['Account_Number'] }}</td>
+                                <td>{{ fd['Created_Time'] }}</td>
+                                <td>Rs. {{ fd['Amount'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
