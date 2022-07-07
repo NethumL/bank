@@ -69,7 +69,6 @@ class TransferController extends AbstractController
         }
 
         return $this->renderForm('transfer/index.html.twig', [
-            'controller_name' => 'TransferController',
             'form' => $form,
         ]);
     }
@@ -82,7 +81,6 @@ class TransferController extends AbstractController
 
         $transfers = $transactionRepository->findByUser($user->getId());
         return $this->render('transfer/history.html.twig', [
-            'controller_name' => 'TransferController',
             'transfers' => $transfers
         ]);
     }

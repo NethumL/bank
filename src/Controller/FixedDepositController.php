@@ -60,7 +60,6 @@ class FixedDepositController extends AbstractController
         }
 
         return $this->renderForm('fixed_deposit/index.html.twig', [
-            'controller_name' => 'FixedDepositController',
             'form' => $form,
         ]);
     }
