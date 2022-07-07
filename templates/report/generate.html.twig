@@ -7,47 +7,33 @@
     <h2>Generate reports</h2>
     <div class="card w-50">
         <div class="card-body">
-            <form class="form-horizontal" method="post">
-                <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="loan_plan">Select Branch</label>
-                    <div class="col-sm-10">
-                        <select class="form-select" id="loan_plan" name="loan_plan" required>
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="row mb-3">
+                {{ form_label(form.branch, 'Branch', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                <div class="col-sm-8">
+                    {{ form_widget(form.branch) }}
+                    {{ form_errors(form.branch) }}
                 </div>
-                <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="loan_duration">Report Type</label>
-                    <div class="col-sm-10">
-                        <select class="form-select" id="loan_duration" name="loan_duration" required>
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
+            </div>
+            <div class="row mb-3">
+                {{ form_label(form.reportType, 'Loan Type', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                <div class="col-sm-8">
+                    {{ form_widget(form.reportType) }}
+                    {{ form_errors(form.reportType) }}
                 </div>
-                <div class="mt-4">
-                    <button
-                            class="btn btn-success btn-block waves-effect waves-light"
-                            type="submit"
-                            name="btn_submit"
-                    >
-                        Submit
-                    </button>
-                    <button
-                            class="btn btn-danger btn-block waves-effect waves-light"
-                            type="submit"
-                            name="btn_submit"
-                    >
-                        Cancel
-                    </button>
+            </div>
+            <div class="row mb-3">
+                {{ form_label(form.date, 'Date', {'label_attr': {'class': 'col-sm-4 col-form-label'}}) }}
+                <div class="col-sm-8">
+                    {{ form_widget(form.date) }}
+                    {{ form_errors(form.date) }}
                 </div>
-
-            </form>
+            </div>
+            <div class="mt-3">
+                {{ form_widget(form.generate, {'attr': {'class': 'btn-success'}}) }}
+            </div>
+            {{ form_end(form) }}
         </div>
     </div>
 </div>

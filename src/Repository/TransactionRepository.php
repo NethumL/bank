@@ -46,4 +46,20 @@ class TransactionRepository extends ServiceEntityRepository
         ");
         return $stmt->executeQuery([$userId])->fetchAllAssociative();
     }
+
+    public function findByBranchIDAndDate(string $branchID, string $date): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare( "
+            SELECT `Transaction`.*, `P`.`Name` AS From_Branch_Name, `Q`.`Name` AS To_Branch_Name FROM `Transaction`
+            LEFT JOIN `Account` AS A ON `A`.`Account_Number`=`Transaction`.`From`
+            LEFT JOIN `Account` AS B ON `B`.`Account_Number`=`Transaction`.`To`
+            LEFT JOIN `Branch` AS P ON `P`.`ID`=`A`.`Branch_ID`
+            LEFT JOIN `Branch` AS Q ON `Q`.`ID`=`B`.`Branch_ID`
+            WHERE ? IN (`A`.`Branch_ID`, `B`.`Branch_ID`)
+            AND
+            DATE(`Transaction`.`Created_Time`)=?
+        ");
+        return $stmt->executeQuery([$branchID, $date])->fetchAllAssociative();
+    }
 }

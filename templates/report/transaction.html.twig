@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReportController!{% endblock %}
+
+{% block body %}
+<div class="row justify-content-md-center">
+    <h2>Total Transaction Report of {{ branch }} Branch</h2>
+    <h3>{{ date }}</h3>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover table-responsive">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>From Account</th>
+                    <th>From Branch</th>
+                    <th>To Account</th>
+                    <th>To Branch</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if transactions %}
+                    {% for transaction in transactions %}
+                        <tr>
+                            <td>{{ transaction['Transaction_ID'] }}</td>
+                            <td>{{ transaction['From'] }}</td>
+                            <td>{{ transaction['From_Branch_Name'] }}</td>
+                            <td>{{ transaction['To'] }}</td>
+                            <td>{{ transaction['To_Branch_Name'] }}</td>
+                            <td>{{ transaction['Type'] }}</td>
+                            <td>{{ transaction['Amount'] }}</td>
+                            <td>{{ transaction['Created_Time'] }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif  %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
