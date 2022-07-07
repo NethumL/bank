@@ -2,6 +2,11 @@
 
 {% block title %}Hello LoanController!{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('loanApproval') }}
+{% endblock %}
+
 {% block body %}
 <h2>Loan Approve Form</h2>
     <div class="card">
@@ -16,36 +21,49 @@
                             <th>Account Number</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr onclick="window.location='#';">
-                            <td>1234</td>
-                            <td>John Doe</td>
-                            <td>123456789</td>
-                        </tr>
+                    <tbody id="table-body">
+                        {% if normalLoans %}
+                            {% for loan in normalLoans %}
+                                <tr
+                                    data-loan-id="{{ loan['ID'] }}"
+                                    data-name="{{ loan['Name'] }}"
+                                    data-amount="{{ loan['Amount'] }}"
+                                    data-account-number="{{ loan['Account_Number'] }}"
+                                    data-loan-plan="{{ loan['Interest_Rate'] }}%, {{ loan['Duration'] }} months"
+                                    data-reason="{{ loan['Reason'] }}"
+                                >
+                                    <td>{{ loan['ID'] }}</td>
+                                    <td>{{ loan['Name'] }}</td>
+                                    <td>{{ loan['Account_Number'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif  %}
                     </tbody>
                 </table>
 
             </div>
             <div class="col">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="display: none" id="message-box">
+                </div>
+                <input type="hidden" name="loanID" id="loanID" autocomplete="off">
                 <label for="name">Customer Name</label>
-                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
-                       value="" required disabled>
-                <label for="name">Account No:</label>
-                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
-                       value="" required disabled>
-                <label for="name">Loan Plan</label>
-                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
-                       value="" required disabled>
-                <label for="name">Duration</label>
-                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
-                       value="" required disabled>
-                <label for="name">Amount</label>
-                <input type="text" name="name" class="form-control" id="name" placeholder="Name"
-                       value="" required disabled>
+                <input type="text" name="name" class="form-control" id="name"
+                       value="" required disabled autocomplete="off">
+                <label for="accountNumber">Account No:</label>
+                <input type="text" name="accountNumber" class="form-control" id="accountNumber"
+                       value="" required disabled autocomplete="off">
+                <label for="loanPlan">Loan Plan</label>
+                <input type="text" name="loanPlan" class="form-control" id="loanPlan"
+                       value="" required disabled autocomplete="off">
+                <label for="amount">Amount</label>
+                <input type="text" name="amount" class="form-control" id="amount"
+                       value="" required disabled autocomplete="off">
+                <label for="reason">Reason</label>
+                <input type="text" name="reason" class="form-control" id="reason"
+                       value="" required disabled autocomplete="off">
                 <div class="mt-4">
-
-                    <button class="btn btn-primary waves-effect waves-light" name="btnSubmit" type="submit">Approve</button>
-                    <button class="btn btn-danger waves-effect waves-light" name="btnCancel" type="submit">Reject</button>
+                    <button class="btn btn-primary waves-effect waves-light" name="btnSubmit" id="approve-btn">Approve</button>
+                    <button class="btn btn-danger waves-effect waves-light" name="btnCancel" id="reject-btn">Reject</button>
                 </div>
 
             </div>
