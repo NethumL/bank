@@ -60,4 +60,37 @@ class InstalmentRepository extends ServiceEntityRepository
         }
         return false;
     }
+
+    public function findLateInstalmentsByBranchIDAndDate(string $branchID, string $year, string $month)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("
+            SELECT 
+            `Installment`.`ID`,
+            `Installment`.`Year`,
+            `Installment`.`Month`,
+            `Installment`.`Amount`,
+            `Loan`.`ID` AS Loan_ID,
+            `Loan`.`Loan_Type`,
+            A.Account_Number AS Normal_Loan_Account,
+            B.Account_Number AS Online_Loan_Account
+            FROM `Installment`
+            INNER JOIN `Loan` ON `Loan`.`ID`=`Installment`.`Loan_ID`
+            LEFT JOIN `Normal_Loan` ON `Loan`.`ID`=`Normal_Loan`.`ID`
+            LEFT JOIN `Online_Loan` ON `Loan`.`ID`=`Online_Loan`.`ID`
+            LEFT JOIN `FD` ON `Online_Loan`.`FD_ID`=`FD`.`ID`
+            LEFT JOIN `Account` AS A ON `Normal_Loan`.`Account_Number`=A.`Account_Number`
+            LEFT JOIN `Account` AS B ON B.`Account_Number`=`FD`.`Account_Number`
+            WHERE :branchID IN (A.Branch_ID, B.Branch_ID) AND
+            (`Installment`.`Year`=:year AND `Installment`.`Month`<=:month) OR
+            (`Installment`.`Year`<:year)
+            ORDER BY Year, Month;
+        ");
+        $resultSet = $stmt->executeQuery([
+            'branchID' => $branchID,
+            'year' => $year,
+            'month' => $month
+        ]);
+        return $resultSet->fetchAllAssociative();
+    }
 }
