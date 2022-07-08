@@ -58,6 +58,13 @@ VALUES (
             '35, Barley Road, Negombo'
        );
 
+-- employee table
+INSERT INTO `employee`
+VALUES (
+           'd160bf33-4a85-43b4-b713-ae846653b611',
+           'dc517d80-82cb-47b4-8bf9-3a82410cec8f'
+       );
+
 -- account table
 INSERT INTO `account`
 (Account_Number, User_ID, Branch_ID, Account_Type, Amount)
@@ -81,12 +88,43 @@ VALUES (
 
 -- savings_plan table
 INSERT INTO `savings_plan`
-(Interest_Rate, Minimum_Balance, Minimum_Age, Maximum_Age)
+(Name, Interest_Rate, Minimum_Balance, Minimum_Age, Maximum_Age)
 VALUES (
-            8,
-            500,
-            18,
-            55
+           'Children',
+           12,
+           100,
+           6,
+           12
+       );
+
+INSERT INTO `savings_plan`
+(Name, Interest_Rate, Minimum_Balance, Minimum_Age, Maximum_Age)
+VALUES (
+           'Teen',
+           11,
+           500,
+           13,
+           19
+       );
+
+INSERT INTO `savings_plan`
+(Name, Interest_Rate, Minimum_Balance, Minimum_Age, Maximum_Age)
+VALUES (
+           'Adult',
+           10,
+           1000,
+           20,
+           60
+       );
+
+INSERT INTO `savings_plan`
+(Name, Interest_Rate, Minimum_Balance, Minimum_Age, Maximum_Age)
+VALUES (
+           'Senior',
+           13,
+           1000,
+           61,
+           75
        );
 
 -- savings table
@@ -155,41 +193,4 @@ INSERT INTO `online_loan`
 VALUES (
             'd295e09f-a1c6-40e1-b763-cbe601ea5bc1',
             '56ba812c-4f4a-408e-a3bb-69ad40c43d07'
-       );
-
--- savings_plan table
-INSERT INTO `savings_plan`
-(Interest_Rate, Minimum_Balance, Minimum_Age, Maximum_Age)
-VALUES (
-        12,
-        100,
-        6,
-        12
-       );
-
-INSERT INTO `savings_plan`
-(Interest_Rate, Minimum_Balance, Minimum_Age, Maximum_Age)
-VALUES (
-           11,
-           500,
-           13,
-           19
-       );
-
-INSERT INTO `savings_plan`
-(Interest_Rate, Minimum_Balance, Minimum_Age, Maximum_Age)
-VALUES (
-           10,
-           1000,
-           20,
-           60
-       );
-
-INSERT INTO `savings_plan`
-(Interest_Rate, Minimum_Balance, Minimum_Age, Maximum_Age)
-VALUES (
-           13,
-           1000,
-           61,
-           75
        );
