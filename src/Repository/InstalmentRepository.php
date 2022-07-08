@@ -58,5 +58,6 @@ class InstalmentRepository extends ServiceEntityRepository
             }
             return $returnValue;
         }
+        return false;
     }
 }
