@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\GenerateReportType;
 use App\Repository\BranchRepository;
+use App\Repository\InstalmentRepository;
 use App\Repository\TransactionRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,7 +56,8 @@ class ReportController extends AbstractController
     public function report(
         Request $request,
         BranchRepository $branchRepository,
-        TransactionRepository $transactionRepository
+        TransactionRepository $transactionRepository,
+        InstalmentRepository $instalmentRepository
     ): Response
     {
         if (
@@ -63,7 +65,7 @@ class ReportController extends AbstractController
             !$request->query->has('reportType') ||
             !$request->query->has('date')
         ) {
-            return $this->redirectToRoute('app_generate_report');
+            return $this->redirectToRoute('app_report_generate');
         }
 
         $branchID = $request->query->get('branch');
@@ -71,11 +73,16 @@ class ReportController extends AbstractController
         $date = $request->query->get('date');
         $reportType = $request->query->get('reportType');
         if (!$branch) {
-            return $this->redirectToRoute('app_generate_report');
+            return $this->redirectToRoute('app_report_generate');
+        }
+
+        $dateFormat = 'Y-m-d';
+        $dateObj = DateTime::createFromFormat($dateFormat, $date);
+        if (!$dateObj || $dateObj->format($dateFormat) !== $date) {
+            return $this->redirectToRoute('app_report_generate');
         }
 
         if ($reportType==='TOTAL_TRANSACTION_REPORT') {
-            // Get all the transactions related to branch ID
             $transactions = $transactionRepository->findByBranchIDAndDate($branchID, $date);
 
             return $this->render('report/transaction.html.twig', [
@@ -84,10 +91,19 @@ class ReportController extends AbstractController
                 'transactions' => $transactions
             ]);
         } else if ($reportType==='LATE_LOAN_INSTALMENTS_REPORT') {
+            $dateObj = new DateTime($date);
+            $year = $dateObj->format('Y');
+            $month = $dateObj->format('m');
+            $instalments = $instalmentRepository->findLateInstalmentsByBranchIDAndDate($branchID,$year, $month);
 
+            return $this->render('report/late-loan-instalment.html.twig', [
+                'branch' => $branch['Name'],
+                'date' => $date,
+                'instalments' => $instalments
+            ]);
         }
         else {
-            return $this->redirectToRoute('app_generate_report');
+            return $this->redirectToRoute('app_report_generate');
         }
     }
 }

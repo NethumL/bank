@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReportController!{% endblock %}
+
+{% block body %}
+<div class="row justify-content-md-center">
+    <h2>Late Loan Instalments Report of {{ branch }} Branch</h2>
+    <h3>{{ date }}</h3>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover table-responsive">
+                <thead>
+                <tr>
+                    <th>Instalment ID</th>
+                    <th>Loan ID</th>
+                    <th>Loan Type</th>
+                    <th>Normal Loan Acc. No.</th>
+                    <th>Online Loan Acc No.</th>
+                    <th>Year</th>
+                    <th>Month</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if instalments %}
+                    {% for instalment in instalments %}
+                        <tr>
+                            <td>{{ instalment['ID'] }}</td>
+                            <td>{{ instalment['Loan_ID'] }}</td>
+                            <td>{{ instalment['Loan_Type'] }}</td>
+                            <td>{{ instalment['Normal_Loan_Account'] }}</td>
+                            <td>{{ instalment['Online_Loan_Account'] }}</td>
+                            <td>{{ instalment['Year'] }}</td>
+                            <td>{{ instalment['Month'] }}</td>
+                            <td>{{ instalment['Amount'] }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif  %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
