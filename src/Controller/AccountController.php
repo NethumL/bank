@@ -8,6 +8,7 @@ use App\Form\CustomerType;
 use App\Repository\AccountRepository;
 use App\Repository\EmployeeRepository;
 use App\Repository\FdRepository;
+use App\Repository\LoanRepository;
 use App\Repository\SavingsRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -104,17 +105,19 @@ class AccountController extends AbstractController
     }
 
     #[Route('/account/view', name: 'app_account_view')]
-    public function view(AccountRepository $accountRepository, FdRepository $fdRepository): Response
+    public function view(AccountRepository $accountRepository, FdRepository $fdRepository, LoanRepository $loanRepository): Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
         $accounts = $accountRepository->findByUser($user->getId());
         $fds = $fdRepository->findByUser($user->getId());
+        $loans = $loanRepository->findAllUnpaidByUser($user->getId());
 
         return $this->render('account/view.html.twig', [
             'accounts' => $accounts,
-            'fds' => $fds
+            'fds' => $fds,
+            'loans' => $loans,
         ]);
     }
 }

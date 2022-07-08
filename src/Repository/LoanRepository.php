@@ -25,6 +25,14 @@ class LoanRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
     }
 
+    public function findAllUnpaidByUser(string $userId): array|bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM Loan L WHERE L.User_ID = ? AND L.Status <> 'PAID' ORDER BY Created_Time;");
+        $resultSet = $stmt->executeQuery([$userId]);
+        return $resultSet->fetchAllAssociative();
+    }
+
     public function findOnlineLoansByUser(string $userId): array|bool
     {
         $conn = $this->getEntityManager()->getConnection();

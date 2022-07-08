@@ -65,6 +65,30 @@
                         </tbody>
                     </table>
                 </div>
+            </div><div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Loans</h5>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Created time</th>
+                            <th>Amount</th>
+                            <th>Reason</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for loan in loans %}
+                            <tr>
+                                <td>{{ loan['Loan_Type'] }}</td>
+                                <td>{{ loan['Created_Time'] }}</td>
+                                <td>Rs. {{ loan['Amount'] }}</td>
+                                <td>{{ loan['Reason'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         {% endif %}
     </div>
