@@ -18,12 +18,12 @@ const approveBtn = document.getElementById('approve-btn');
 approveBtn.addEventListener('click', function() {
     const loanIDVal = loanID.value;
 
-    fetch(`http://localhost:8000/loan/approval/${loanIDVal}`, {
+    fetch(`http://127.0.0.1:8000/loan/approval/${loanIDVal}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        redirect: 'follow',
+        credentials: 'include',
         body: JSON.stringify({
             approval: true
         })
@@ -52,7 +52,7 @@ const rejectBtn = document.getElementById('reject-btn');
 rejectBtn.addEventListener('click', function() {
     const loanIDVal = loanID.value;
 
-    fetch(`http://localhost:8000/loan/approval/${loanIDVal}`, {
+    fetch(`http://127.0.0.1:8000/loan/approval/${loanIDVal}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
