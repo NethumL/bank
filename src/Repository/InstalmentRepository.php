@@ -24,10 +24,16 @@ class InstalmentRepository extends ServiceEntityRepository
         return $resultSet->fetchAssociative();
     }
 
-    public function findAllByUser(string $userId): array
+    public function findAllUnpaidByUser(string $userId): array
     {
         $conn = $this->getEntityManager()->getConnection();
-        $stmt = $conn->prepare("SELECT I.*, L.User_ID, L.Loan_Type FROM Installment I JOIN Loan L ON I.Loan_ID = L.ID WHERE User_ID = ?");
+        $stmt = $conn->prepare("
+            SELECT I.*, L.User_ID, L.Loan_Type
+            FROM Installment I
+            JOIN Loan L ON I.Loan_ID = L.ID
+            WHERE User_ID = ? AND I.Status <> 'PAID'
+            ORDER BY I.Year, I.Month
+        ");
         $resultSet = $stmt->executeQuery([$userId]);
         return $resultSet->fetchAllAssociative();
     }

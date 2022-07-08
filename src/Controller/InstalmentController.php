@@ -31,7 +31,7 @@ class InstalmentController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $instalments = $instalmentRepository->findAllByUser($user->getId());
+        $instalments = $instalmentRepository->findAllUnpaidByUser($user->getId());
         return $this->render('instalment/view.html.twig', [
             'instalments' => $instalments,
         ]);
