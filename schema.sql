@@ -94,7 +94,8 @@ CREATE TABLE `FD`
     `Amount`         decimal(15, 2) NOT NULL,
     `Created_Time`   timestamp      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`ID`),
-    FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`)
+    FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`),
+    FOREIGN KEY (`Account_Number`) REFERENCES `Account` (`Account_Number`)
 );
 
 CREATE TABLE `Loan_Plan`
