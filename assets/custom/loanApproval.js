@@ -18,7 +18,7 @@ const approveBtn = document.getElementById('approve-btn');
 approveBtn.addEventListener('click', function() {
     const loanIDVal = loanID.value;
 
-    fetch(`http://127.0.0.1:8000/loan/approval/${loanIDVal}`, {
+    fetch(`/loan/approval/${encodeURIComponent(loanIDVal)}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ const rejectBtn = document.getElementById('reject-btn');
 rejectBtn.addEventListener('click', function() {
     const loanIDVal = loanID.value;
 
-    fetch(`http://127.0.0.1:8000/loan/approval/${loanIDVal}`, {
+    fetch(`/loan/approval/${encodeURIComponent(loanIDVal)}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
