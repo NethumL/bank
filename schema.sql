@@ -239,4 +239,16 @@ BEGIN
     END IF;
 END $$
 
+CREATE TRIGGER mark_loan_paid
+    AFTER UPDATE
+    ON `Installment`
+    FOR EACH ROW
+BEGIN
+    IF (NEW.Status = 'PAID') THEN
+        IF (SELECT COUNT(*) FROM Installment WHERE Loan_ID = NEW.Loan_ID AND Status <> 'PAID') = 0 THEN
+            UPDATE Loan SET Status = 'PAID' WHERE ID = NEW.Loan_ID;
+        END IF;
+    END IF;
+END $$
+
 DELIMITER ;
