@@ -52,7 +52,8 @@ CREATE TABLE `Account`
     `Amount`         decimal(15, 2)              NOT NULL,
     PRIMARY KEY (`Account_Number`),
     FOREIGN KEY (`Branch_ID`) REFERENCES `Branch` (`ID`),
-    FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`)
+    FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`),
+    CHECK (`Amount` >= 0)
 );
 
 CREATE TABLE `Savings`
@@ -67,15 +68,16 @@ CREATE TABLE `Savings`
 CREATE TABLE `Transaction`
 (
     `Transaction_ID` varchar(36)                                           NOT NULL,
-    `From`           varchar(20)                                           NULL DEFAULT NULL,
-    `To`             varchar(20)                                           NULL DEFAULT NULL,
+    `From`           varchar(20)                                           NULL     DEFAULT NULL,
+    `To`             varchar(20)                                           NULL     DEFAULT NULL,
     `Type`           enum ('WITHDRAWAL', 'TRANSFER', 'DEPOSIT', 'PAYMENT') NOT NULL,
     `Amount`         decimal(15, 2)                                        NOT NULL,
     `Created_Time`   timestamp                                             NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `Description`    text                                                  NULL     DEFAULT NULL,
     PRIMARY KEY (`Transaction_ID`),
     FOREIGN KEY (`From`) REFERENCES `Account` (`Account_Number`),
-    FOREIGN KEY (`To`) REFERENCES `Account` (`Account_Number`)
+    FOREIGN KEY (`To`) REFERENCES `Account` (`Account_Number`),
+    CHECK (`Amount` > 0)
 );
 
 CREATE TABLE `FD_Plan`
@@ -95,7 +97,8 @@ CREATE TABLE `FD`
     `Created_Time`   timestamp      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`Plan_ID`) REFERENCES `FD_Plan` (`ID`),
-    FOREIGN KEY (`Account_Number`) REFERENCES `Account` (`Account_Number`)
+    FOREIGN KEY (`Account_Number`) REFERENCES `Account` (`Account_Number`),
+    CHECK (`Amount` > 0)
 );
 
 CREATE TABLE `Loan_Plan`
@@ -108,18 +111,19 @@ CREATE TABLE `Loan_Plan`
 
 CREATE TABLE `Loan`
 (
-    `ID`           varchar(36)                          NOT NULL,
-    `User_ID`      varchar(36)                          NOT NULL,
-    `Loan_Type`    enum ('PERSONAL', 'BUSINESS')        NOT NULL,
+    `ID`           varchar(36)                                      NOT NULL,
+    `User_ID`      varchar(36)                                      NOT NULL,
+    `Loan_Type`    enum ('PERSONAL', 'BUSINESS')                    NOT NULL,
     `Status`       enum ('CREATED', 'APPROVED', 'REJECTED', 'PAID') NOT NULL,
-    `Created_Time` timestamp                            NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `Amount`    decimal(15,2)                        NOT NULL,
-    `Loan_Mode` enum ('NORMAL', 'ONLINE')        NOT NULL,
-    `Plan_ID`   int NOT NULL,
-    `Reason`    text,
+    `Created_Time` timestamp                                        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `Amount`       decimal(15, 2)                                   NOT NULL,
+    `Loan_Mode`    enum ('NORMAL', 'ONLINE')                        NOT NULL,
+    `Plan_ID`      int                                              NOT NULL,
+    `Reason`       text,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`User_ID`) REFERENCES `User` (`ID`),
-    FOREIGN KEY (`Plan_ID`) REFERENCES `Loan_Plan` (`ID`)
+    FOREIGN KEY (`Plan_ID`) REFERENCES `Loan_Plan` (`ID`),
+    CHECK (`Amount` > 0)
 );
 
 
@@ -150,7 +154,8 @@ CREATE TABLE `Installment`
     `Amount`  decimal(15, 2)           NOT NULL,
     `Status`  enum ('CREATED', 'PAID') NOT NULL,
     PRIMARY KEY (`ID`),
-    FOREIGN KEY (`Loan_ID`) REFERENCES `Loan` (`ID`)
+    FOREIGN KEY (`Loan_ID`) REFERENCES `Loan` (`ID`),
+    CHECK (`Amount` > 0)
 );
 
 DELIMITER $$
