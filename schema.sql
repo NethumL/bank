@@ -204,8 +204,8 @@ CREATE EVENT savings_interest
         SET month_length = 30;
         WHILE counter < length
             DO
-                SELECT S.Account_Number, A.Created_Time, SP.Interest_Rate
-                INTO @num, @t, @r
+                SELECT S.Account_Number, A.Created_Time, SP.Interest_Rate, A.Amount
+                INTO @num, @t, @r, @a
                 FROM Savings S
                          JOIN Savings_Plan SP ON S.Plan_ID = SP.ID
                          JOIN Account A ON S.Account_Number = A.Account_Number
