@@ -41,7 +41,7 @@ class TransactionRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
         $stmt = $conn->prepare( "
-            SELECT * FROM Transaction T LEFT JOIN Account A on T.`From` = A.Account_Number
+            SELECT T.* FROM Transaction T LEFT JOIN Account A on T.`From` = A.Account_Number
             WHERE A.User_ID = ?
         ");
         return $stmt->executeQuery([$userId])->fetchAllAssociative();
